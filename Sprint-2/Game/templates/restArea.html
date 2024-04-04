@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Safe Area</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        background-image: url('background-image.jpg'); /* Replace with your actual image file */
+        background-size: cover;
+        font-family: Arial, sans-serif;
+    }
+    .safe-area-prompt {
+        margin-top: 20px;
+        border: 2px solid #000;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.8);
+    }
+    button {
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #statusBar {
+        position: absolute;
+        bottom: 20px;
+        font-size: 18px;
+    }
+    #settingsButton {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 18px;
+    }
+</style>
+</head>
+<body>
+
+<div class="safe-area-prompt">
+    <p>This place seems safe. What would you like to do?</p>
+    <button onclick="rest()">Rest</button>
+    <button onclick="goToShop()">Shop</button>
+    <button onclick="leaveArea()">Leave</button>
+</div>
+
+<div id="statusBar">
+    <span>HP: 100/100</span> | <span>Gold: 1000gp</span>
+</div>
+
+<button id="settingsButton" onclick="openSettings()">☰ Settings</button>
+
+<script>
+// JavaScript for button functions
+function rest() {
+    console.log("Resting... HP is now full.");
+    // Placeholder: Update HP in your game logic
+}
+
+function goToShop() {
+    console.log("Going to the shop...");
+    // Placeholder: Navigate to the shop screen
+}
+
+function leaveArea() {
+    console.log("Leaving the area...");
+    // Placeholder: Logic for leaving the safe area
+}
+
+function openSettings() {
+    console.log("Opening settings...");
+    // Placeholder: Open settings menu
+}
+
+// Include Phaser Game logic and integrate these functions where necessary
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+mainMenu.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Main Menu</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+    button {
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<h1>Welcome to the Game</h1>
+<button onclick="newGame()">New Game</button>
+<button onclick="loadGame()">Load Game</button>
+<button onclick="viewLeaderboard()">View Leaderboard</button>
+<button onclick="viewLeaderboard('treasure')">View Found Treasure List</button>
+<button onclick="viewLeaderboard('killDeathRatio')">View Kill/Death Ratio Leaderboard</button>
+
+<!-- Element where the leaderboard will be displayed -->
+<div id="leaderboardDisplay"></div>
+
+
+
+<script>
+// Detailed JavaScript functions for game actions
+function newGame() {
+    // Assume we have a function to check if the user has existing data
+    if (hasExistingGameData()) {
+        // Confirm with the user if they want to reset their existing game (for returning players)
+        let resetConfirmed = confirm("Are you sure you want to start a new game? This will reset your current progress.");
+        if (!resetConfirmed) {
+            return; // If they do not confirm, exit the function to avoid resetting the game
+        }
+    }
+
+    // Proceed with resetting the game or starting a new game
+    
+    fetch('/reset-game', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('New game started:', data);
+        // Redirect to game page or initialize game state in the frontend
+        window.location.href = '/game.html';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+// Example function to check if the user has existing game data
+function hasExistingGameData() {
+    // You would implement this to check against your backend or local storage
+    // For now, we'll just return false to indicate a new player
+    return false; // Or true if they have existing data
+}
+
+
+
+function loadGame() {
+    // Example: Fetch the player's saved game state
+    fetch('/load-game?userId=user123') // Include query parameters as needed
+    .then(response => response.json())
+    .then(data => {
+        console.log('Game loaded:', data);
+        // Use 'data' to set game state
+        // This might involve setting variables, updating the UI, etc.
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+function viewLeaderboard(leaderboardType) {
+    let endpoint;
+    // Determine which leaderboard to fetch based on `leaderboardType`
+    if (leaderboardType === 'treasure') {
+        endpoint = '/leaderboard-treasure-data';
+    } else if (leaderboardType === 'killDeathRatio') {
+        endpoint = '/leaderboard-kill-death-ratio-data';
+    } else {
+        console.error('Invalid leaderboard type specified:', leaderboardType);
+        return;
+    }
+
+    // Fetch the specified leaderboard data
+    fetch(endpoint)
+    .then(response => response.json())
+    .then(data => {
+        console.log(`Leaderboard (${leaderboardType}):`, data);
+        // Process and display the specified leaderboard data
+        // For example, this could update the innerHTML of a leaderboard display element
+        const leaderboardDisplay = document.getElementById('leaderboardDisplay');
+        // You would create and assign content to `leaderboardDisplay` based on `data`
+    })
+    .catch((error) => {
+        console.error('Error fetching leaderboard data:', error);
+    });
+}
+
+
+
+
+</script>
+
+</body>
+</html>
+
+
