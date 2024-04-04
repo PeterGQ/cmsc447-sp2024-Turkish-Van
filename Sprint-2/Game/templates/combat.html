@@ -1,0 +1,63 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Dark Ascent - Combat</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 1280,
+        height: 720,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    var clickCountText;
+
+    function preload ()
+    {
+       
+    }
+
+    function create ()
+    {
+        var clickCount = 0;
+        clickCountText = this.add.text(100,200, '');
+        const clickButton = this.add.text(100, 100, 'Attack', { fill: '#0f0' });
+        clickButton.setInteractive();
+        clickButton.on('pointerdown', () => updateClickCountText(++clickCount));
+
+        updateClickCountText(clickCount);
+
+    }
+    function updateClickCountText(clickCount) {
+        this.clickCountText.setText('Button has been clicked ' + clickCount + ' times.');
+    }
+    function update ()
+    {
+        
+    }
+</script>
+
+</body>
+</html>
