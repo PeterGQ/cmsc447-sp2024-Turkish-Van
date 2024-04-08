@@ -1,155 +1,145 @@
-<!doctype html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8" />
-    <title>Dark Ascent - Combat</title>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-        }
-    </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dark Ascent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="/static/css/app.css" rel="stylesheet">
 </head>
+
 <body>
-
-<script type="text/javascript">
-
-    var config = {
-        type: Phaser.AUTO,
-        width: 1280,
-        height: 720,
-        backgroundColor: '#6f4586',
-        physics: {
-            default: 'arcade',
-            arcade: {
-                debug: false
+    <script>
+        function getAttackOptions(aOrI, playerData) {
+            var moves = ['Slash', 'Defend', 'Deep Breath', 'Killing Blow', 'Fireball', 'Dragon\'s Dance'];
+            var items = [['Potion', 2], ['Bomb', 1], ['Throwing Knife', 7], ['Pokeball', 8], ['Spaghetti', 5], ['Bread', 9]]
+            var newChoices = document.getElementById('choices');
+            newChoices.style.display = "inherit";
+            if (aOrI == 1) {
+                newChoices.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Attacks </a> </li>');
+                for (var i = 0; i < moves.length; i++) {
+                    newChoices.innerHTML += '<li class="nav-item"><button class ="choice" id=\'attack' + i + '\' onClick="">' + moves[i] + '</button></li>';
+                }
+                    
             }
-        },
-        scene: {
-            preload: preload,
-            create: create,
-            update: update
+            else {
+                newChoices.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Items </a> </li>');
+                for (var i = 0; i < moves.length; i++) {
+                    newChoices.innerHTML += '<li class="nav-item"><button class ="choice" id=\'item' + i + '\'onClick="">' +
+                                             items[i][0] + " x" + items[i][1] + '</button></li>';
+                }
+            }
         }
-    };
-
-    var game = new Phaser.Game(config);
-    var clickCountText;
-    var attackButton;
-    var itemsButton;
-    var runButton;
-    var graphics;
-    var buttonBorders;
-    var option1;
-    var option2;
-    var option3;
-    var option4;
-    var option5;
-    var option6;
-
-    function preload ()
-    {
-       
-    }
-
-    function create ()
-    {
-        var clickCount = 0;
-        clickCountText = this.add.text(100,480, '');
-        
-        //Adding borders around for buttons to be contained in
-        graphics = this.add.graphics({ lineStyle: { width: 2, color: '#e3e3e3' }, fillStyle: { color: '#e3e3e3' }});
-        buttonBorders = new Phaser.Geom.Rectangle(60, 520, 200, 180);
-        graphics.strokeRectShape(buttonBorders);
-        buttonBorders = new Phaser.Geom.Rectangle(60, 520, 580, 180);
-        graphics.strokeRectShape(buttonBorders);
-        buttonBorders = new Phaser.Geom.Rectangle(60, 520, 1160, 180);
-        graphics.strokeRectShape(buttonBorders);
-
-        //Adding all buttons
-        attackButton = this.add.text(90, 540, 'Attack', { fill: '#e3e3e3'});
-        attackButton.setInteractive();
-        attackButton.setStyle("/css/button.css");
-        attackButton.on('pointerdown', () => enterButtonClickedState(this, ++clickCount));
-        attackButton.on('pointerover', () => enterButtonHoverState(attackButton));
-        attackButton.on('pointerout', () => enterButtonRestState(attackButton));
-        
-        itemsButton = this.add.text(90, 600, 'Items', { fill: '#e3e3e3' });
-        itemsButton.setInteractive();
-        itemsButton.setStyle("/css/button.css");
-        itemsButton.on('pointerdown', () => enterButtonClickedState(this, ++clickCount));
-        itemsButton.on('pointerover', () => enterButtonHoverState(itemsButton));
-        itemsButton.on('pointerout', () => enterButtonRestState(itemsButton));
-
-        runButton = this.add.text(90, 660, 'Run', { fill: '#e3e3e3' });
-        runButton.setInteractive();
-        runButton.on('pointerdown', () => enterButtonClickedState(this, ++clickCount));
-        runButton.on('pointerover', () => enterButtonHoverState(runButton));
-        runButton.on('pointerout', () => enterButtonRestState(runButton));
-
-        option1 = this.add.text(300, 540, '', { fill: '#e3e3e3' });
-
-        option2 = this.add.text(300, 600, '', { fill: '#e3e3e3' });
-
-        option3 = this.add.text(300, 660, '', { fill: '#e3e3e3' });
-        
-        option4 = this.add.text(480, 540, '', { fill: '#e3e3e3' });
-
-        option5 = this.add.text(480, 600, '', { fill: '#e3e3e3' });
-        
-        option6 = this.add.text(480, 660, '', { fill: '#e3e3e3' });
-    }
-    function enterButtonClickedState(scene, clickCount) {
-        clickCountText.setText('Button has been clicked ' + clickCount + ' times.');
-        
-        option1.setText('Slash', { fill: '#e3e3e3'});
-        option1.setInteractive();
-        option1.setStyle("/css/button.css");
-        option1.on('pointerover', () => enterButtonHoverState(option1));
-        option1.on('pointerout', () => enterButtonRestState(option1));
-
-        option2.setText('Slash', { fill: '#e3e3e3'});
-        option2.setInteractive();
-        option2.setStyle("/css/button.css");
-        option2.on('pointerover', () => enterButtonHoverState(option2));
-        option2.on('pointerout', () => enterButtonRestState(option2));
-
-        option3.setText('Slash', { fill: '#e3e3e3'});
-        option3.setInteractive();
-        option3.setStyle("/css/button.css");
-        option3.on('pointerover', () => enterButtonHoverState(option3));
-        option3.on('pointerout', () => enterButtonRestState(option3));
-
-        option4.setText('Slash', { fill: '#e3e3e3'});
-        option4.setInteractive();
-        option4.setStyle("/css/button.css");
-        option4.on('pointerover', () => enterButtonHoverState(option4));
-        option4.on('pointerout', () => enterButtonRestState(option4));
-        
-        option5.setText('Slash', { fill: '#e3e3e3'});
-        option5.setInteractive();
-        option5.setStyle("/css/button.css");
-        option5.on('pointerover', () => enterButtonHoverState(option5));
-        option5.on('pointerout', () => enterButtonRestState(option5));
-
-        option6.setText('Slash', { fill: '#e3e3e3'});
-        option6.setInteractive();
-        option6.setStyle("/css/button.css");
-        option6.on('pointerover', () => enterButtonHoverState(option6));
-        option6.on('pointerout', () => enterButtonRestState(option6));
-
-    }
-    function enterButtonHoverState(button) {
-        button.setStyle({fill: '#ff0"'});
-    }
-    function enterButtonRestState(button) {
-        button.setStyle({fill: '#e3e3e3'});
-    }
-
-    function update ()
-    {
-        
-    }
-</script>
-
+        function getAttackOptions(aOrI, playerData) {
+            var moves = ['Slash', 'Defend', 'Deep Breath', 'Killing Blow', 'Fireball', 'Dragon\'s Dance'];
+            var items = [['Potion', 2], ['Bomb', 1], ['Throwing Knife', 7], ['Pokeball', 8], ['Spaghetti', 5], ['Bread', 9]]
+            var newChoices = document.getElementById('choices');
+            newChoices.style.display = "inherit";
+            if (aOrI == 1) {
+                newChoices.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Attacks </a> </li>');
+                for (var i = 0; i < moves.length; i++) {
+                    newChoices.innerHTML += '<li class="nav-item"><button class ="choice" id=\'attack' + i + '\' onClick="">' + moves[i] + '</button></li>';
+                }
+                    
+            }
+            else {
+                newChoices.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Items </a> </li>');
+                for (var i = 0; i < moves.length; i++) {
+                    newChoices.innerHTML += '<li class="nav-item"><button class ="choice" id=\'item' + i + '\'onClick="">' +
+                                             items[i][0] + " x" + items[i][1] + '</button></li>';
+                }
+            }
+        }
+    </script>
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="container-fluid">
+            <div class="row">
+                <!--Player Model-->
+                <div class="col">
+                    <div class="row" id="HP">
+                        100/100
+                    </div>
+                    <div class="row">
+                        <div class = "p-10">
+                            <image src="/static/player.png" class="float-start"> <break>
+                        </div>
+                    </div>
+                </div>
+                <!--Enemy Model(s)-->
+                {%for enemy in enemies %}
+                <div class="col enemy">
+                    <div class="row align-text-right" id="HP">
+                        <h2>{{enemy['hp']}}</h2>
+                    </div>
+                    <div class="row">
+                        <div class = "p-10">
+                            <image src="/static/enemy.png" class="float-end"> <break>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+            <!--User Interface at Bottom of Screen-->
+            <div class="row ui-background" style="height: 180px">
+                <!--Player chooses action (to attack, use item, or run)-->
+                <div class="col choice-section" >
+                    <div class = "p-10">
+                        <ul class="nav flex-column">
+                            <li>
+                                <a class ="colTitle" aria-current="page">Actions</a>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onclick="getAttackOptions(1, ['hi','there'])">Fight</button>
+                                
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="getAttackOptions(0, ['hi','there'])">Items</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Run</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--Player chooses (attack/item) to use from list of options-->
+                <div class="col choice-section">
+                    <div class = "p-10">
+                        <ul class="nav flex-column" id="choices" style="display: none">
+                            <li>
+                                <a class ="colTitle" aria-current="page">Choices</a>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Fight</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Items</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Run</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Fight</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Items</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class ="choice" onClick="">Run</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
+                <!--Item or user description-->
+                <div class="col-8 choice-section">
+                    <div class = "p-10">
+                        <a class ="colTitle" aria-current="page">Description</a> <break>
+                    </div>
+                    <div class = "Description">
+                        
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
