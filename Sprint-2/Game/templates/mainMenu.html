@@ -130,6 +130,21 @@
     console.log("Exit cancelled."); // Optional: Log if the user cancels the exit
   }
 }
+function viewLeaderboard(leaderboardType) {
+    let endpoint;
+    // Determine which leaderboard to fetch based on `leaderboardType`
+    if (leaderboardType === 'treasure') {
+        endpoint = '/leaderboard-treasure-data';
+    } else if (leaderboardType === 'killDeathRatio') {
+        endpoint = '/leaderboard-kill-death-ratio-data';
+    } else {
+        console.error('Invalid leaderboard type specified:', leaderboardType);
+        return;
+    }
+
+    
+}
+
 
   </script>
 </body>
