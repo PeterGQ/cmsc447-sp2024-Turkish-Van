@@ -160,10 +160,57 @@ function viewLeaderboard(leaderboardType) {
 
 <div class="menu-container">
   <h1>Welcome to the Game</h1>
-  <button onclick="window.location.href='newGame.html'">New Game</button>
-  <button onclick="window.location.href='loadGame.html'">Load Game</button>
+  <button onclick="newGame()">New Game</button>
+  <button onclick="loadGame()">Load Game</button>
   <button onclick="window.location.href='leaderboard.html'">View Leaderboard</button>
 </div>
-
+<script>
+  // Detailed JavaScript functions for game actions
+  function newGame() {
+      // Checking for existing game data and resetting the game if confirmed
+      if (hasExistingGameData()) {
+          let resetConfirmed = confirm("Are you sure you want to start a new game? This will reset your current progress.");
+          if (!resetConfirmed) {
+              return; // Exit the function to avoid resetting the game
+          }
+      }
+  
+      // Proceed with resetting the game or starting a new one
+      fetch('/reset-game', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log('New game started:', data);
+          // Redirect to the game page or initialize game state in the frontend
+          window.location.href = '/game.html'; // Replace with the path to your game page
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+  }
+  
+  function loadGame() {
+      // Fetch the player's saved game state
+      fetch('/load-game?userId=user123') // Include query parameters as needed
+      .then(response => response.json())
+      .then(data => {
+          console.log('Game loaded:', data);
+          // Use 'data' to set game state, update UI, etc.
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+  }
+  
+  function hasExistingGameData() {
+      // Implement checking for existing game data
+      return false; // Replace with actual check for existing data
+  }
+  </script>
 </body>
 </html>
