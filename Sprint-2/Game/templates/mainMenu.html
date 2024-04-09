@@ -1,108 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Main Menu</title>
-<style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-    }
-    button {
-        padding: 10px 20px;
-        margin: 5px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-</style>
-</head>
-<body>
 
-<h1>Welcome to the Game</h1>
-<button onclick="newGame()">New Game</button>
-<button onclick="loadGame()">Load Game</button>
-<button onclick="viewLeaderboard()">View Leaderboard</button>
-<button onclick="viewLeaderboard('treasure')">View Found Treasure List</button>
-<button onclick="viewLeaderboard('killDeathRatio')">View Kill/Death Ratio Leaderboard</button>
-
-<div id="leaderboardDisplay"></div>
-
-
-
-<script>
-// Detailed JavaScript functions for game actions
-function newGame() {
-    // Assume we have a function to check if the user has existing data
-    if (hasExistingGameData()) {
-        // Confirm with the user if they want to reset their existing game (for returning players)
-        let resetConfirmed = confirm("Are you sure you want to start a new game? This will reset your current progress.");
-        if (!resetConfirmed) {
-            return; // If they do not confirm, exit the function to avoid resetting the game
-        }
-    }
-
-    // Proceed with resetting the game or starting a new game
-    
-    fetch('/reset-game', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('New game started:', data);
-        // Redirect to game page or initialize game state in the frontend
-        window.location.href = '/game.html';
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
-
-// Example function to check if the user has existing game data
-function hasExistingGameData() {
-    // You would implement this to check against your backend or local storage
-    // For now, we'll just return false to indicate a new player
-    return false; // Or true if they have existing data
-}
-
-
-
-function loadGame() {
-    // Example: Fetch the player's saved game state
-    fetch('/load-game?userId=user123') // Include query parameters as needed
-    .then(response => response.json())
-    .then(data => {
-        console.log('Game loaded:', data);
-        // Use 'data' to set game state
-        // This might involve setting variables, updating the UI, etc.
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
-
-
-
-function viewLeaderboard(leaderboardType) {
-    window.location.href = 'leaderboard.html';
-}
-
-
-
-
-</script>
-
-</body>
-</html>
-
- -->
  <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,45 +63,55 @@ function viewLeaderboard(leaderboardType) {
 <script>
   // Detailed JavaScript functions for game actions
   function newGame() {
-      // Checking for existing game data and resetting the game if confirmed
-      if (hasExistingGameData()) {
-          let resetConfirmed = confirm("Are you sure you want to start a new game? This will reset your current progress.");
-          if (!resetConfirmed) {
-              return; // Exit the function to avoid resetting the game
-          }
-      }
+    console.log("New game button clicked."); // Log when function is triggered
   
-      // Proceed with resetting the game or starting a new one
-      fetch('/reset-game', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log('New game started:', data);
-          // Redirect to the game page or initialize game state in the frontend
-          window.location.href = '/game.html'; // Replace with the path to your game page
-      })
-      .catch((error) => {
-          console.error('Error:', error);
-      });
-  }
+    if (hasExistingGameData()) {
+        console.log("Existing game data found."); // Confirm existing data is detected
+        let resetConfirmed = confirm("Are you sure you want to start a new game? This will reset your current progress.");
+        if (!resetConfirmed) {
+            console.log("Game reset cancelled by user."); // Log cancellation
+            return; // Exit the function to avoid resetting the game
+        }
+    }
+  
+    console.log("Proceeding with game reset."); // Log continuation after confirmation
+    fetch('/reset-game', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+    })
+    .then(response => {
+        console.log("Reset game response received."); // Log when response is received
+        return response.json();
+    })
+    .then(data => {
+        console.log('New game started:', data); // Log the data received
+        window.location.href = '/game.html'; // Redirect or initialize game state
+    })
+    .catch((error) => {
+        console.error('Error during game reset:', error); // Log any errors
+    });
+}
+
   
   function loadGame() {
-      // Fetch the player's saved game state
-      fetch('/load-game?userId=user123') // Include query parameters as needed
-      .then(response => response.json())
-      .then(data => {
-          console.log('Game loaded:', data);
-          // Use 'data' to set game state, update UI, etc.
-      })
-      .catch((error) => {
-          console.error('Error:', error);
-      });
-  }
+    console.log("Load game button clicked."); // Log when function is triggered
+    fetch('/load-game?userId=user123') // Make sure this URL matches your server's endpoint
+    .then(response => {
+        console.log("Response received."); // Log when response is received
+        return response.json();
+    })
+    .then(data => {
+        console.log('Game loaded:', data); // Log the data received
+        // Here you can add code to update the UI based on the loaded game data
+    })
+    .catch((error) => {
+        console.error('Error:', error); // Log any errors
+    });
+}
+
   
   function hasExistingGameData() {
       // Implement checking for existing game data
