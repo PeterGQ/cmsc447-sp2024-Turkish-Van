@@ -1,6 +1,4 @@
-mainMenu.html
-
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -31,7 +29,6 @@ mainMenu.html
 <button onclick="viewLeaderboard('treasure')">View Found Treasure List</button>
 <button onclick="viewLeaderboard('killDeathRatio')">View Kill/Death Ratio Leaderboard</button>
 
-<!-- Element where the leaderboard will be displayed -->
 <div id="leaderboardDisplay"></div>
 
 
@@ -94,30 +91,7 @@ function loadGame() {
 
 
 function viewLeaderboard(leaderboardType) {
-    let endpoint;
-    // Determine which leaderboard to fetch based on `leaderboardType`
-    if (leaderboardType === 'treasure') {
-        endpoint = '/leaderboard-treasure-data';
-    } else if (leaderboardType === 'killDeathRatio') {
-        endpoint = '/leaderboard-kill-death-ratio-data';
-    } else {
-        console.error('Invalid leaderboard type specified:', leaderboardType);
-        return;
-    }
-
-    // Fetch the specified leaderboard data
-    fetch(endpoint)
-    .then(response => response.json())
-    .then(data => {
-        console.log(`Leaderboard (${leaderboardType}):`, data);
-        // Process and display the specified leaderboard data
-        // For example, this could update the innerHTML of a leaderboard display element
-        const leaderboardDisplay = document.getElementById('leaderboardDisplay');
-        // You would create and assign content to `leaderboardDisplay` based on `data`
-    })
-    .catch((error) => {
-        console.error('Error fetching leaderboard data:', error);
-    });
+    window.location.href = 'leaderboard.html';
 }
 
 
@@ -128,4 +102,68 @@ function viewLeaderboard(leaderboardType) {
 </body>
 </html>
 
+ -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Menu</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin-top: 100px;
+    background-color: #282a36; /* Dark background for contrast */
+    color: #f8f8f2; /* Light color for text */
+  }
 
+  .menu-container {
+    margin: auto;
+    width: 250px;
+  }
+
+  h1 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: color-change 2s infinite;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-image: linear-gradient(to right, #ff79c6, #bd93f9);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  @keyframes color-change {
+    0% { color: #ff79c6; }
+    50% { color: #bd93f9; }
+    100% { color: #ff79c6; }
+  }
+</style>
+</head>
+<body>
+
+<div class="menu-container">
+  <h1>Welcome to the Game</h1>
+  <button onclick="window.location.href='newGame.html'">New Game</button>
+  <button onclick="window.location.href='loadGame.html'">Load Game</button>
+  <button onclick="window.location.href='leaderboard.html'">View Leaderboard</button>
+</div>
+
+</body>
+</html>

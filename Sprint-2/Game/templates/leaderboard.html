@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin-top: 100px;
+    background-color: #282a36;
+    color: #f8f8f2;
+  }
+
+  .menu-container {
+    margin: auto;
+    width: 250px;
+  }
+
+  h1 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: color-shift 2s infinite alternate;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-image: linear-gradient(to left, #50fa7b, #6272a4);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  @keyframes color-shift {
+    0% { color: #50fa7b; }
+    50% { color: #6272a4; }
+    100% { color: #50fa7b; }
+  }
+</style>
+</head>
+<body>
+
+<div class="menu-container">
+  <h1>Leaderboard</h1>
+  <button onclick="window.location.href='foundTreasureList.html'">View Found Treasure List</button>
+  <button onclick="window.location.href='kdRatioLeaderboard.html'">View Kill/Death Ratio Leaderboard</button>
+</div>
+
+</body>
+</html>
