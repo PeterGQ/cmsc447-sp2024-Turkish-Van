@@ -81,10 +81,26 @@
 <button id="settingsButton" onclick="openSettings()">☰ Settings</button>
 
 <script>
-// JavaScript for button functions
+// Initialize player object with default values or load from localStorage
+let player = {
+    hp: 100, // Default HP
+    maxHp: 100, // Default Max HP
+    gold: 1000 // Default gold
+};
+// Check if there's saved player data in localStorage when the page loads
+document.addEventListener("DOMContentLoaded", () => {
+    const savedPlayer = localStorage.getItem("player");
+    if (savedPlayer) {
+        player = JSON.parse(savedPlayer);
+    }
+    updateStatus(); // Reflect the current player state in the UI
+});
+
 function rest() {
-    console.log("Resting... HP is now full.");
-    // Placeholder: Update HP in your game logic
+    player.hp = player.maxHp;
+    alert("You have rested. HP is now full.");
+    updateStatus();
+    savePlayer();
 }
 
 function goToShop() {
