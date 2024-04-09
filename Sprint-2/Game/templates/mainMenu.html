@@ -59,6 +59,7 @@
   <button onclick="newGame()">New Game</button>
   <button onclick="loadGame()">Load Game</button>
   <button onclick="window.location.href='leaderboard.html'">View Leaderboard</button>
+  <button onclick="exitGame()">Exit</button>
 </div>
 <script>
   // Detailed JavaScript functions for game actions
@@ -117,6 +118,19 @@
       // Implement checking for existing game data
       return false; // Replace with actual check for existing data
   }
+  function exitGame() {
+  // Display confirmation dialog
+  var exitConfirmed = confirm("Are you sure you want to exit the game?");
+  
+  // Check if user confirmed exit
+  if (exitConfirmed) {
+    console.log("Exiting game."); // Optional: Log when function is triggered for exit
+    window.location.href = 'welcome.html'; // Redirect to a welcome or home page, or handle the exit as needed
+  } else {
+    console.log("Exit cancelled."); // Optional: Log if the user cancels the exit
+  }
+}
+
   </script>
 </body>
 </html>
