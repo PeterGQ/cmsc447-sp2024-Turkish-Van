@@ -15,13 +15,11 @@ def restArea():
 
 @app.route('/ranking')
 def ranking():
-    # Logic to fetch and display the kill-death ranking
-    pass
+  return render_template('ranking.html')
 
-@app.route('/treasure')
+@app.route('/register')
 def treasure():
-    # Logic to fetch and display the treasure gallery
-    pass
+    return render_template('register.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
