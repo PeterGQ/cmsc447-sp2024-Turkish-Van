@@ -1,19 +1,24 @@
 from flask import Flask, render_template
 import sqlite3
-
 app = Flask(__name__)
 
-def get_db_connection():
-    conn = sqlite3.connect('game.db')
-    conn.row_factory = sqlite3.Row  # This enables column access by name: row['column_name']
-    return conn
+@app.route('/')
+def main_menu():
+    return render_template('mainMenu.html')
 
-@app.route("/")
-def display():
-    conn = get_db_connection()
-    players = conn.execute('SELECT * FROM player_scores ORDER BY score DESC').fetchall()
-    conn.close()
-    return render_template('mainMenu.html', players=players)
+@app.route('/leaderboard')
+def leaderboard():
+    return render_template('leaderboard.html')
+
+@app.route('/ranking')
+def ranking():
+    # Logic to fetch and display the kill-death ranking
+    pass
+
+@app.route('/treasure')
+def treasure():
+    # Logic to fetch and display the treasure gallery
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)
