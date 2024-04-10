@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map and Player Info</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="map-container">
+            <img src="{{ url_for('static', filename='Shop3.jpg') }}" alt="Shop" class="Shop">
+            <div class="box">
+                <section class="item-container">
+                    <h2>Potions</h2>
+                    <div class="slider-wrapper">
+                        <div class="slider">
+                            <img id="Divine Blessing" src="{{ url_for('static', filename='Divine Blessing.png') }}" alt="shop" class="image-item" data-imageid="1">
+                            <img id="Elixir of Fortitude" src="{{ url_for('static', filename='Elixir of Fortitude.png') }}" alt="shop" class="image-item" data-imageid="2">
+                            <img id="Elixir of Vitality" src="{{ url_for('static', filename='Elixir of Vitality.png') }}" alt="shop" class="image-item" data-imageid="3">
+                            <img id="Goblin Blood Vial" src="{{ url_for('static', filename='Goblin Blood Vial.png') }}" alt="shop" class="image-item" data-imageid="4">
+                            <img id="Herbal Tonic" src="{{ url_for('static', filename='Herbal Tonic.png') }}" alt="shop" class="image-item" data-imageid="5">
+                            <img id="Iron Skin Potion" src="{{ url_for('static', filename='Iron Skin Potion.png') }}" alt="shop" class="image-item" data-imageid="6">
+                            <img id="Leather Armlet" src="{{ url_for('static', filename='Leather Armlet.png') }}" alt="shop" class="image-item" data-imageid="7">
+                            <img id="Potion of Healing" src="{{ url_for('static', filename='Potion of Healing.png') }}" alt="shop" class="image-item" data-imageid="8">
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="itemDetails" class="item-details">
+                <div class="confirm-item">
+                    <h2>How many would you like to buy?</h2>
+                    <button class="btn1">
+                        Confirm
+                    </button>
+                    <button class="btn2">
+                        Leave
+                    </button>
+                </div>
+                <div class="purchase-item">
+                    <h2 class="name" id="itemName">Name:</h2>
+                    <h4 class="description" id="itemDescription">Description:</h4>
+                    <ul class="op-box" id="shopItemDetails">
+                        <li>hp_buff:</li>
+                        <li>atk_buff:</li>
+                        <li>def_buff:</li>
+                        <li>duration:</li>
+                        <li>cooldown:</li>
+                        <li>price:</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='item.js') }}"></script>
+</body>
+</html>
