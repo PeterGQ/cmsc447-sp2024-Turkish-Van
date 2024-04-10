@@ -9,6 +9,9 @@ def main_menu():
 @app.route('/leaderboard')
 def leaderboard():
     return render_template('leaderboard.html')
+@app.route('/restArea')
+def restArea():
+    return render_template('restArea.html')
 
 @app.route('/ranking')
 def ranking():
