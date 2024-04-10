@@ -12,9 +12,8 @@ def index():
 
 @app.route('/main_temp')
 def main_temp():
-    return "This would be the main menu"
+    return render_template("main_temp.html")
     
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     conn_users = sqlite3.connect('user_info.db')
@@ -27,6 +26,10 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         password_confirm = request.form.get('password_check')
+        
+        if ' ' in username or ' ' in password or ' ' in password_confirm:
+            flash("Username and password must not contain spaces.", 'error')
+            return render_template('register.html')
         
         if password != password_confirm:
             flash('Passwords do not match. Try Again', category= 'error')
@@ -50,9 +53,9 @@ def register():
         rows = cursor_items.fetchall()
 
         for row in rows:
-            cursor_users.execute("""INSERT INTO user_inventory (user, item_name, quantity)
-                                 VALUES(?,?,?)
-                                 """, (username, row[0], 1))
+            cursor_users.execute("""INSERT INTO user_moves(user, move_name)
+                                 VALUES(?,?)
+                                 """, (username, row[0]))
         
         conn_items.commit()
         conn_users.commit()
@@ -71,6 +74,10 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+
+        if ' ' in username or ' ' in password:
+            flash("Username and password must not contain spaces.", 'error')
+            return render_template('login.html')
 
         cursor_users.execute("SELECT COUNT(*) FROM logins WHERE username = ?", (username,))
         count = cursor_users.fetchone()[0]
@@ -93,5 +100,41 @@ def login():
             return render_template('login.html')
 
     return render_template('login.html')
+
+@app.route('/leaderboard')
+def leaderboard():
+    return render_template('leaderboard.html')
+
+@app.route('/ranking')
+def ranking():
+    conn_users = sqlite3.connect('user_info.db')
+    cursor_users = conn_users.cursor()
+
+    cursor_users.execute("SELECT username, player_kills, player_deaths FROM logins")
+    rows = cursor_users.fetchall()
+
+    kdr_list = []
+    for row in rows:
+        username, kills, deaths = row
+        kdr = get_KDR(kills, deaths)
+        kdr_display = f"{kills}-{deaths}"
+        
+        kdr_list.append((username,kdr_display,kdr))
+        sorted_kdr_list = sorted(kdr_list, key=lambda x: x[2], reverse=True)
+
+    return render_template('ranking.html', kdr_list=sorted_kdr_list)
+
+def get_KDR(kills, deaths):
+    if kills > 0 and deaths == 0:
+        return (100 * kills)
+    elif deaths == 0:
+        return (0)
+    else:
+        return (kills/deaths)
+@app.route('/treasuregallery')
+def treasure():
+    
+    return render_template('treasure_gallery.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

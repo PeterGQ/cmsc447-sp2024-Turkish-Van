@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html>
     <style>
+        @font-face {
+            font-family: "Ancient Modern Tales";
+            src: url("/static/fonts/ancientmoderntales-a7po-webfont.woff2") format('woff2'),
+                url("/static/fonts/ancientmoderntales-a7po-webfont.woff") format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Breathe Fire';
+            src: url("/static/fonts/breathefire-65pg-webfont.woff2") format('woff2'),
+                url("/static/fonts/breathefire-65pg-webfont.woff") format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body{
             background-image: url("/static/images/8bit\ Temp\ Background.jpg");
             background-size: cover;
@@ -14,12 +30,6 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
-        }
-
-        @font-face {
-            font-family: "Ancient Modern Tales";
-            src: url("/static/fonts/ancientmoderntales-a7po-webfont.woff") format("woff"),
-            url("/static/fonts/ancientmoderntales-a7po-webfont.woff2") format("woff2");
         }
 
         h3{
@@ -156,7 +166,7 @@
             <p>
                 Already Have An Account? Continue Your Adventure
                 
-                <a href="login.html">
+                <a href= "{{ url_for('login') }}">
                     Login In
                 </a>
             </p>

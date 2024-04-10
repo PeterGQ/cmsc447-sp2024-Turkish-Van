@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        @font-face {
+            font-family: "Ancient Modern Tales";
+            src: url("/static/fonts/ancientmoderntales-a7po-webfont.woff2") format('woff2'),
+                url("/static/fonts/ancientmoderntales-a7po-webfont.woff") format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Breathe Fire';
+            src: url("/static/fonts/breathefire-65pg-webfont.woff2") format('woff2'),
+                url("/static/fonts/breathefire-65pg-webfont.woff") format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body{
+            background-image: url("/static/images/8bit\ Temp\ Background.jpg");
+            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #Game_Title{
+            position: relative;
+            margin-top: -100px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h3{
+            color: white;
+            font-family: 'Ancient Modern Tales';
+            letter-spacing: 1.2px;
+            text-align: center;
+            margin-top: -150px;
+            font-size: 40px;
+            font-weight: lighter;
+        }
+
+        label{
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+            color: white;
+            font-family: 'Ancient Modern Tales';
+            font-weight: 30;
+            font-size: 25px;
+            text-align: center;
+        }
+
+        button{
+          background-color: #2f3d8f;  
+          border: none;
+          color: white;
+          padding: 10px 20px;
+          text-align: center;
+          display: block;
+          font-size: 30px;
+          margin: 0px 70px;
+          font-family: 'Ancient Modern Tales';
+          border-radius: 8px;
+          text-decoration: none;
+          position: relative;
+          margin-top: -100px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        a{
+            text-decoration: none; 
+            color: whitesmoke;
+        }
+        
+        .back-button{
+            text-decoration: none;  
+            color: whitesmoke;
+            font-family: 'Ancient Modern Tales';
+            letter-spacing: 1.2px;
+            text-align: left;
+            position: absolute;
+            bottom: 20px;
+            font-size: 25px;
+        }
+
+    </style>
+    <head>
+        <title>
+
+        </title>
+    </head>
+    <body>
+        <img id = "Game_Title" src = "/static/images/Logo.png">
+
+        <div class="button-container">
+            <a href="{{ url_for('ranking') }}">
+                <button> Kill-Death Rank </button>
+            </a>
+
+            <a href="{{ url_for('treasure') }}">
+                <button>Treasure Gallery</button>
+            </a>
+
+        </div>
+
+        {% block content %}{% endblock %}
+        
+        <div class="back-button">
+            <a href="{{ url_for('main_temp') }}">
+                Back to Main Menu
+            </a>
+        </div>
+    </body>
+</html>

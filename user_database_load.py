@@ -29,3 +29,22 @@ cur.execute("""CREATE TABLE user_inventory(
             )
             """)
 
+cur.execute("""CREATE TABLE user_moves(
+            user VARCHAR NOT NULL,
+            move_name TEXT NOT NULL,
+
+            PRIMARY KEY (user, move_name),
+            FOREIGN KEY (user) REFERENCES login(usename),
+            FOREIGN KEY (move_name) REFERENCES game_items(name)
+            )
+            """)
+
+cur.execute("""CREATE TABLE user_treasure(
+            user VARCHAR NOT NULL,
+            treasure_name TEXT NOT NULL,
+
+            PRIMARY KEY (user, treasure_name),
+            FOREIGN KEY (user) REFERENCES login(usename),
+            FOREIGN KEY (treasure_name) REFERENCES treasure(name)
+            )
+            """)
