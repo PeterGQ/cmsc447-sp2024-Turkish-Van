@@ -2,124 +2,31 @@
 <html lang="en">
 <head>
     <title>Dark Ascent</title>
+    <!--Bootstrap References-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link href="/static/css/combat.css" rel="stylesheet">
-</head>
-
-<body>
-    <script>
-        var attacks;
-        var items;
-        var lastChoice = "";
-        //The parameter aOrI indicates item (0) or attack (1)
-        function getDataForItems(data) {
-            console.log(data);
-            items = JSON.parse(data);
-            for (var i = 0; i < items.length; i++) {
-                console.log(items[i]);
-            }
-        }
-
-        function getOptions(aOrI, playerData) {
-            var moves = ['Slash', 'Defend', 'Deep Breath'];
-            var newChoices = document.getElementById('choices');
-            document.getElementById('enemies').innerHTML = "";
-            newChoices.style.display = "inherit";
-            lastChoice = ""
-            if (aOrI == 1) {
-                newChoices.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Attacks </a> </li>');
-                for (var i = 0; i < moves.length; i++) {
-                    document.getElementById('attack').style.color = "#7f7dab"
-                    document.getElementById('items').style.color = "#9290C3"
-                    newChoices.innerHTML += '<li class="nav-item"><button class ="choice" id="'+ moves[i] + '" onClick=\"getConfirmation(1, '+ i +')\">'
-                     + moves[i] + '</button></li>';
-                     console.log(i);
-                }
-                    
-            }
-            else {
-                newChoices.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Items </a> </li>');
-                for (var i = 0; i < items.length; i++) {
-                    document.getElementById('items').style.color = "#7f7dab"
-                    document.getElementById('attack').style.color = "#9290C3"
-                    newChoices.innerHTML += '<li class="nav-item"><button class ="choice" id="' + items[i].name + '" onClick=\"getConfirmation(0, '+ i +')\">' +
-                        items[i].name + " x" + i + '</button></li>';
-                }
-            }
-        }
-        function getConfirmation(aOrI, index) {
-            var moves = ['Slash', 'Defend', 'Deep Breath'];
-            var items = [['Potion', 2], ['Bomb', 1], ['Throwing Knife', 7], ['Pokeball', 8], ['Spaghetti', 5], ['Bread', 9]]
-            var enemiesTest = ['Goblin', 'Goblin Mage', 'Goblin Brute'];
-            var htmlElement = document.getElementById('enemies');
-            htmlElement.style.display = "inherit";
-            if(aOrI == 1) {
-                document.getElementById(moves[index]).style.color = "#7f7dab"
-                if (lastChoice != "" && lastChoice != moves[index][0]) {
-                    document.getElementById(lastChoice).style.color = "#9290C3"
-                }
-                lastChoice = moves[index];
-                htmlElement.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Enemies </a> </li>');
-                for (var i = 0; i < enemiesTest.length; i++) {
-                    htmlElement.innerHTML += '<li class=\"nav-item\"><button class =\"choice\" id=\'attack' + i + '\' onClick="startTurn(' + i +')">' + enemiesTest[i] + '</button></li>';
-                }
-            }
-            else {
-                document.getElementById(items[index][0]).style.color = "#7f7dab";
-                if (lastChoice != "" && lastChoice != items[index][0]) {
-                    document.getElementById(lastChoice).style.color = "#9290C3";
-                }
-                lastChoice = items[index][0];
-                htmlElement.innerHTML = '<div class="confirm">' +
-                                        '<li class="nav-item"><button class ="choice" id=\'çonfirm\' onClick=\"startTurn(-1)\"> Confirm </button></li></div>';
-            }
-        }
-
-        function startTurn(index) {
-            
-        }
-
-        function turn(attackOrItem) {
-            if (attackOrItem == 0) {
-                //Figure out who goes first based off speed stat, then figure out turn order.
-            }
-            else {
-                //Let user use item first, then enemy attacks
-            }
-        }
     
-    </script>
-    <script>
-        getDataForItems({{data|tojson}});
-    </script>
+    <!--In-House Files-->
+    <link href="/static/css/combat.css" rel="stylesheet">
+    <script src="/static/js/combat.js"> </script>
+</head>
+<body>
     <div class="d-flex align-items-center justify-content-center">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row" id="characters">
                 <!--Player Model-->
                 <div class="col">
-                    <div class="row" id="HP">
-                        100/100
+                    <div id="playerName">
+                    </div>
+                    <div class="row" id="playerHP">
                     </div>
                     <div class="row">
                         <div class = "p-10">
-                            <image src="/static/player.png" class="float-start"> <break>
+                            <image src="/static/assets/characters/player.png" class="float-start"> <break>
                         </div>
                     </div>
                 </div>
                 <!--Enemy Model(s)-->
-                {%for enemy in enemies %}
-                <div class="col enemy">
-                    <div class="row align-text-right" id="HP">
-                        <h2>{{enemy['hp']}}</h2>
-                    </div>
-                    <div class="row">
-                        <div class = "p-10">
-                            <image src="/static/enemy.png" class="float-end"> <break>
-                        </div>
-                    </div>
-                </div>
-                {%endfor%}
             </div>
             <!--User Interface at Bottom of Screen-->
             <div class="row ui-background">
@@ -161,6 +68,11 @@
             </div>
         </div>
     </div>
+    <script>
+        importItems({{itemData|tojson}});
+        importPlayer({{playerData|tojson}})
+        importEnemies({{enemiesData|tojson}});
+    </script>
 </body>
 
 </html>

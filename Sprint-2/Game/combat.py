@@ -40,8 +40,9 @@ def combat():
         if (waveString in entry[1]):
             waveNumberIndex = entry[1].find(waveString)
             numEnemyType = int(entry[1][(waveNumberIndex + 2):(waveNumberIndex+3)])
+            enemyMoves = getEnemyMoves(entry[0])
             for i in range(numEnemyType): 
-                enemiesArray.append({'name': entry[0] + " " + str(i + 1), 'icon': entry[2], 'hp': entry[3], 'atk': entry[4], 'def': entry[5]})
+                enemiesArray.append({'name': entry[0] + " " + str(i + 1), 'icon': entry[2], 'hp': entry[3], 'atk': entry[4], 'def': entry[5], 'moves': enemyMoves})
         
     items_json = json.dumps(itemsArray)
     enemies_json = json.dumps(enemiesArray)
@@ -79,6 +80,18 @@ def loadPlayer(user):
         currentPlayer['treasure'].append(relic[1])
     
     conn.close()
+
+def getEnemyMoves(enemyName):
+    conn = sqlite3.connect('enemies.db')
+    
+    rawData = conn.execute('SELECT * FROM enemy_moves WHERE enemy = ?', (enemyName,)).fetchall()
+    enemyMoves = []
+    #Only getting the move names
+    for entry in rawData:
+        enemyMoves.append(entry[1]);
+    return enemyMoves
+    
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
