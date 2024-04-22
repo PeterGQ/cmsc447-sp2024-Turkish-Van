@@ -16,7 +16,7 @@ cur.execute("""CREATE TABLE enemies (
             """)
 
 enemy_list = [
-    ("Goblin", "1:2 2:2 3:1", "/static/assets/characters/goblin.png" , 30, 1, .5),
+    ("Goblin", "1:2 2:2 3:1", "/static/assets/characters/goblin.png" , 30, 1, 1),
     ("Goblin Brute", "3:1", "/static/assets/characters/goblin_brute.png", 60, 1.5, .5),
     ("Goblin Mage", "2:1 3:1", "/static/assets/characters/goblin_mage.png", 30, 1, .5),
     
