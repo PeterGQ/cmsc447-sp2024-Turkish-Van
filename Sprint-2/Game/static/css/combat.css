@@ -4,6 +4,10 @@ body{
     background: #070F2B;
     color: #9290C3;
 }
+img {
+    width: 250x;
+    height: 300px;
+}
 .container-fluid{
     padding-left: 5%;
     padding-right: 5%;
