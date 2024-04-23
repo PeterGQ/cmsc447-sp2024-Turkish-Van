@@ -92,28 +92,65 @@
             font-size: 25px;
         }
 
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            }
+                
+            th{
+                color: black;
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+    
+            td {
+                color: whitesmoke;
+                font-family: 'Ancient Modern Tales';
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+                background-color: rgba(55,62,156, .40);
+            }
+            
+            th {
+                background-color: #f2f2f2;
+            }
+    
+            h1{
+                color: white;
+                font-family: 'Ancient Modern Tales';
+                letter-spacing: 1.2px;
+                text-align: center;
+                margin-top: -100px;
+                font-size: 40px;
+                font-weight: lighter;
+            }
     </style>
-    <head>
-        <title>
-
-        </title>
-    </head>
     <body>
         <img id = "Game_Title" src = "/static/images/Logo.png">
+            <div>
+                <h1>Kill-Death Rank</h1>
+            </div>
 
-        <div class="button-container">
-            <a href="{{ url_for('ranking') }}">
-                <button> Kill-Death Rank </button>
-            </a>
+            <div class="button-container"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>KDR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for username, kdr_display, _ in kdr_list %}
+                    <tr>
+                        <td>{{ username }}</td>
+                        <td>{{ kdr_display }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-            <a href="{{ url_for('treasure') }}">
-                <button>Treasure Gallery</button>
-            </a>
-
-        </div>
-
-        {% block content %}{% endblock %}
-        
         <div class="back-button">
             <a href="{{ url_for('main_temp') }}">
                 Back to Main Menu

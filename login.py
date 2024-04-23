@@ -5,6 +5,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
+current_user = None
 
 @app.route('/')
 def index():
@@ -93,6 +94,7 @@ def login():
 
         if check_password_hash(user_password_hash, password):
             flash('LOGIN SUCCESSFUL. Enjoy your adventure!', 'success')
+            current_user = username
             return redirect(url_for('main_temp'))
         
         else:
@@ -103,10 +105,6 @@ def login():
 
 @app.route('/leaderboard')
 def leaderboard():
-    return render_template('leaderboard.html')
-
-@app.route('/ranking')
-def ranking():
     conn_users = sqlite3.connect('user_info.db')
     cursor_users = conn_users.cursor()
 
@@ -122,7 +120,7 @@ def ranking():
         kdr_list.append((username,kdr_display,kdr))
         sorted_kdr_list = sorted(kdr_list, key=lambda x: x[2], reverse=True)
 
-    return render_template('ranking.html', kdr_list=sorted_kdr_list)
+    return render_template('leaderboard.html', kdr_list=sorted_kdr_list)
 
 def get_KDR(kills, deaths):
     if kills > 0 and deaths == 0:
@@ -131,10 +129,6 @@ def get_KDR(kills, deaths):
         return (0)
     else:
         return (kills/deaths)
-@app.route('/treasuregallery')
-def treasure():
-    
-    return render_template('treasure_gallery.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

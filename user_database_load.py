@@ -39,12 +39,4 @@ cur.execute("""CREATE TABLE user_moves(
             )
             """)
 
-cur.execute("""CREATE TABLE user_treasure(
-            user VARCHAR NOT NULL,
-            treasure_name TEXT NOT NULL,
-
-            PRIMARY KEY (user, treasure_name),
-            FOREIGN KEY (user) REFERENCES login(usename),
-            FOREIGN KEY (treasure_name) REFERENCES treasure(name)
-            )
-            """)
+conn.commit()
