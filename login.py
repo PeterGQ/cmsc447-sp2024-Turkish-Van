@@ -1,5 +1,6 @@
 import sqlite3
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask_session import Session
 from flask_bcrypt import Bcrypt, check_password_hash, generate_password_hash
 import os
 
@@ -11,9 +12,9 @@ current_user = None
 def index():
     return redirect(url_for('login'))
 
-@app.route('/main_temp')
-def main_temp():
-    return render_template("main_temp.html")
+@app.route('/main_menu')
+def main_menu():
+    return render_template("mainMenu.html")
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -95,7 +96,7 @@ def login():
         if check_password_hash(user_password_hash, password):
             flash('LOGIN SUCCESSFUL. Enjoy your adventure!', 'success')
             current_user = username
-            return redirect(url_for('main_temp'))
+            return redirect(url_for('main_menu'))
         
         else:
             flash('Invalid username or password', 'error')
@@ -129,6 +130,11 @@ def get_KDR(kills, deaths):
         return (0)
     else:
         return (kills/deaths)
+    
+@app.route('/clear_session')
+def clear_session():
+    session.pop('_flashes',None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

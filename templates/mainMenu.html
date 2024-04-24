@@ -1,0 +1,224 @@
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Menu</title>
+<style>
+  @font-face {
+      font-family: "Ancient Modern Tales";
+      src: url("/static/fonts/ancientmoderntales-a7po-webfont.woff2") format('woff2'),
+          url("/static/fonts/ancientmoderntales-a7po-webfont.woff") format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+  @font-face {
+      font-family: 'Breathe Fire';
+      src: url("/static/fonts/breathefire-65pg-webfont.woff2") format('woff2'),
+          url("/static/fonts/breathefire-65pg-webfont.woff") format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+  body{
+      background-image: url("/static/images/8bit\ Temp\ Background.jpg");
+      background-size: cover;
+      width: 100vw;
+      height: 100vh;
+  }
+
+  #Game_Title{
+      position: relative;
+      margin-top: -100px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  h3{
+      color: white;
+      font-family: 'Ancient Modern Tales';
+      letter-spacing: 1.2px;
+      text-align: center;
+      margin-top: -150px;
+      font-size: 50px;
+      font-weight: lighter;
+  }
+
+  label{
+      display: block;
+      margin-top: 10px;
+      text-align: left;
+      color: white;
+      font-family: 'Ancient Modern Tales';
+      font-weight: 30;
+      font-size: 25px;
+      text-align: center;
+  }
+
+  input{
+      display: block;
+      width: 50%;
+      margin-bottom: 35px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      position: relative;
+      margin-right: auto;
+      margin-left: auto;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      background-color: rgba(47, 61, 143, 0.6);
+      color: white;
+
+  }
+
+  button{
+    background-color: #2f3d8f;  
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    display: block;
+    font-size: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Ancient Modern Tales';
+    border-radius: 8px;
+  }
+
+  p{
+      color: white;
+      font-family: 'Ancient Modern Tales';
+      letter-spacing: 1.2px;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 25px;
+  }
+
+  a{
+    text-decoration: none;  
+    color: whitesmoke;
+    font-family: 'Ancient Modern Tales';
+    letter-spacing: 1.2px;
+    text-align: left;
+    position: relative;
+    font-size: 25px;
+    background-image: linear-gradient(to right, #393f93, #20194c);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 5%;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 8px;
+    }
+
+  .alert{
+      background-color:rgba(47, 61, 143, 0.6);
+      border-color: whitesmoke;
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      position: relative;
+      margin-right: auto;
+      margin-left: auto;
+      box-sizing: border-box;
+      font-weight: bolder;
+      font-size: 18px;
+      padding: 10px;
+  }
+  
+  .menu-container {
+    margin: auto;
+    width: 250px;
+  }
+
+  h1{
+    color: white;
+    font-family: 'Ancient Modern Tales';
+    letter-spacing: 1.2px;
+    text-align: center;
+    margin-top: -135px;
+    font-size: 40px;
+    font-weight: lighter;
+  }
+
+</style>
+</head>
+<body>
+  <img id = "Game_Title" src = "/static/images/Logo.png">
+
+  <h1>Welcome To The Game</h1>
+
+  <button onclick="newGame()">New Game</button>
+  <button onclick="loadGame()">Load Game</button>
+  <a href = "{{url_for('leaderboard')}}"> View Leaderboard</a>
+  <a href="{{url_for('clear_session')}}" onclick="return confirm('Are you sure you want to exit the game?')">Exit Game</a>
+
+<script>
+  // Detailed JavaScript functions for game actions
+  function newGame() {
+    console.log("New game button clicked."); // Log when function is triggered
+  
+    if (hasExistingGameData()) {
+        console.log("Existing game data found."); // Confirm existing data is detected
+        let resetConfirmed = confirm("Are you sure you want to start a new game? This will reset your current progress.");
+        if (!resetConfirmed) {
+            console.log("Game reset cancelled by user."); // Log cancellation
+            return; // Exit the function to avoid resetting the game
+        }
+    }
+  
+    console.log("Proceeding with game reset."); // Log continuation after confirmation
+    fetch('/reset-game', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+    })
+    .then(response => {
+        console.log("Reset game response received."); // Log when response is received
+        return response.json();
+    })
+    .then(data => {
+        console.log('New game started:', data); // Log the data received
+        window.location.href = '/game.html'; // Redirect or initialize game state
+    })
+    .catch((error) => {
+        console.error('Error during game reset:', error); // Log any errors
+    });
+}
+
+  
+  function loadGame() {
+    console.log("Load game button clicked."); // Log when function is triggered
+    fetch('/load-game?userId=user123') // Make sure this URL matches your server's endpoint
+    .then(response => {
+        console.log("Response received."); // Log when response is received
+        return response.json();
+    })
+    .then(data => {
+        console.log('Game loaded:', data); // Log the data received
+        // Here you can add code to update the UI based on the loaded game data
+    })
+    .catch((error) => {
+        console.error('Error:', error); // Log any errors
+    });
+}
+
+  
+  function hasExistingGameData() {
+      // Implement checking for existing game data
+      return false; // Replace with actual check for existing data
+  }
+
+  </script>
+</body>
+</html>
