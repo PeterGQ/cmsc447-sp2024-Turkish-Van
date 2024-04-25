@@ -1,13 +1,37 @@
+@font-face {
+    font-family: "Ancient Modern Tales";
+    src: url("/static/fonts/ancientmoderntales-a7po-webfont.woff2") format('woff2'),
+        url("/static/fonts/ancientmoderntales-a7po-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Breathe Fire';
+    src: url("/static/fonts/breathefire-65pg-webfont.woff2") format('woff2'),
+        url("/static/fonts/breathefire-65pg-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 body{
     background-image:url('/static/combatBackground.png');
     background-repeat: no-repeat;
     background: #070F2B;
     color: #9290C3;
+    font-family: 'Breathe Fire';
+    font-size: 20px;
 }
 img {
     width: 250x;
     height: 300px;
 }
+
+.name {
+    font-size: 30px;
+}
+
 .container-fluid{
     padding-left: 5%;
     padding-right: 5%;
@@ -23,6 +47,7 @@ img {
     border-style: solid;
     border-color: #070F2B;
     box-shadow: 10px 10px #091235;
+    z-index: 0;
 }
 .choice-section-middle{
     
@@ -30,6 +55,7 @@ img {
     border-style: solid;
     border-color: #070F2B;
     box-shadow: 10px 10px #091235;
+    z-index: 0;
 }
 .choice-section-left{
     
@@ -37,6 +63,14 @@ img {
     border-style: solid;
     border-color: #070F2B;
     box-shadow: 10px 10px #091235;
+    z-index: 0;
+}
+.choice-section-bottom{
+    background: #0c1a4a;
+    border-style: solid;
+    border-color: #070F2B;
+    box-shadow: 10px 10px #091235;
+    z-index: 1;
 }
 .fill-section{
     background: #070F2B;
@@ -66,8 +100,41 @@ img {
     width: 50%;
     padding: 10px;
 }
-
+.log {
+    height:100px
+}
 
 .blankSpace{
     background: #0c1a4a;
+}
+
+.endScreen{
+    background: #0c1a4a;
+    border-style: solid;
+    border-color: #070F2B;
+    box-shadow: 10px 10px #091235;
+}
+
+.game-condition{
+    text-align: center;
+    font-family: 'Ancient Modern Tales';
+    font-size: 50px;
+}
+
+.dropsTitle {
+    font-size: 25px;
+}
+
+
+.returnButton {
+    text-align: center;
+    background-color: transparent;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    padding: 0;
+    color: #9290C3;
 }

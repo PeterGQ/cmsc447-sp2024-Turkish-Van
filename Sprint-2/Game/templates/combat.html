@@ -12,11 +12,11 @@
 </head>
 <body>
     <div class="d-flex align-items-center justify-content-center">
-        <div class="container-fluid">
+        <div class="container-fluid gy-10" id="game">
             <div class="row" id="characters">
                 <!--Player Model-->
                 <div class="col">
-                    <div id="playerName">
+                    <div class = "row name" id="playerName">
                     </div>
                     <div class="row" id="playerHP">
                     </div>
@@ -64,9 +64,19 @@
                             <!--This will be updated proactively-->
                         </ul>
                     </div>
-                </div> 
+                </div>
             </div>
-        </div>
+            <div class="row ui-background log">
+                <div class="col-6 choice-section-bottom">
+                    <div class="colTitle">Log</div> 
+                        <ul id="log">
+                            
+                        </ul>
+                    </div>
+                <div class="col-6" style="display: hidden">
+                    
+            </div>
+        </div> 
     </div>
     <script>
         importItems({{itemData|tojson}});

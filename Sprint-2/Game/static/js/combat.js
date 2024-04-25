@@ -42,7 +42,7 @@ function importPlayer(data) {
     inventory = new Map(Object.entries(player.get('inventory')));
     player.set('inventory', inventory);
 
-    console.log(player)
+    console.log(player);
 
     //Printing username and hp above player sprite
     document.getElementById("playerName").innerHTML = player.get('username');
@@ -127,12 +127,28 @@ function getConfirmation(aOrI, index) {
 //startTurn()
 //Runs playerTurn and enemiesTurn
 function startTurn(enemyIndex) {
+
+    document.getElementById("log").innerHTML = "";
+
     //Player goes first'
     playerTurn(enemyIndex)
     //Enemies go in ascending order of list
     enemiesTurn()
-    document.getElementById('choices').innerHTML = "";
-    document.getElementById('enemies').innerHTML = "";
+    
+    var gameState = checkWinOrLoss();
+
+    if (gameState == -1) {
+        document.getElementById('choices').innerHTML = "";
+        document.getElementById('enemies').innerHTML = "";
+    }
+    else if (gameState == 0) {
+        document.getElementById('game').innerHTML = "";
+        generateEndScreen(gameState);
+    }
+    else if (gameState == 1) {
+        document.getElementById('game').innerHTML = "";
+        generateEndScreen(gameState);
+    }
 }
 
 //playerTurn()
@@ -142,6 +158,7 @@ function playerTurn(enemyIndex) {
     var moveIndex = getItemIndex(lastChoice);
     var isAtk = isAttack(moveIndex);
     var damageAmount = 0;
+    updateLog(player.get('username'), lastChoice);
     if (isAttack && items[moveIndex].atk_buf == null) {
         damageAmount = (player.get('atk'))/(enemies[enemyIndex].def) * baseAtkDamage;
         console.log(damageAmount); 
@@ -181,43 +198,42 @@ function enemiesTurn() {
     var damageAmount = 0;
     for (var i = 0; i < enemies.length; i++) {
         //Skips turn if dead
-        if (enemies[i].hp < 0) {
-            return;
-        }
-        
-        //Getting random move choice for enemy
-        choice = Math.floor(Math.random() * enemies[i].moves.length);
-        moveIndex = getItemIndex(enemies[i].moves[choice]);
-        isAtk = isAttack(moveIndex);
-        
-        //Attack based moves (damage = (atk_stat * atk_buf_of_move) / target_def)
-        if (isAtk && items[moveIndex].atk_buf == null) {
-            damageAmount = enemies[i].atk/(player.get('def')) * baseAtkDamage;
-            console.log(damageAmount); 
-            player.set('hp', player.get('hp') - damageAmount);
-            updateHealth(-1);
-        }
-        else if (isAtk && items[moveIndex].atk_buf != null) {
-            damageAmount = (items[moveIndex].atk_buf * enemies[i].atk)/(player.get('def')) * baseAtkDamage;
-            console.log(damageAmount);
-            player.set('hp', player.get('hp') - damageAmount);
-            updateHealth(-1);
-        }
-        
-        //Applying buffs to self
-        else if (!isAtk && items[moveIndex].hp_buff != null && items[moveIndex].hp_buff != 0) {
-            if (player.get('hp') + items[moveIndex].hp_buff < maxPlayerHealth) {
-                player.set('hp',player.get('hp') + items[moveIndex].hp_buff);
+        if (enemies[i].hp > 0) {
+            //Getting random move choice for enemy
+            choice = Math.floor(Math.random() * enemies[i].moves.length);
+            moveIndex = getItemIndex(enemies[i].moves[choice]);
+            isAtk = isAttack(moveIndex);
+            
+            updateLog(enemies[i].name, enemies[i].moves[choice]);
+            //Attack based moves (damage = (atk_stat * atk_buf_of_move) / target_def)
+            if (isAtk && items[moveIndex].atk_buf == null) {
+                damageAmount = enemies[i].atk/(player.get('def')) * baseAtkDamage;
+                console.log(damageAmount); 
+                player.set('hp', player.get('hp') - damageAmount);
+                updateHealth(-1);
             }
-            else {
-                player.set('hp', maxPlayerHealth);
+            else if (isAtk && items[moveIndex].atk_buf != null) {
+                damageAmount = (items[moveIndex].atk_buf * enemies[i].atk)/(player.get('def')) * baseAtkDamage;
+                console.log(damageAmount);
+                player.set('hp', player.get('hp') - damageAmount);
+                updateHealth(-1);
             }
-        }
-        else if (!isAtk && items[enemyIndex].atk_buff != null && items[moveIndex].atk_buff != 0) {
-            player.set('atk', items[moveIndex].atk_buff);
-        }
-        else if (!isAtk && items[enemyIndex].def_buff != null && items[moveIndex].def_buff != 0) {
-            player.set('def', items[moveIndex].def_buff);
+            
+            //Applying buffs to self
+            else if (!isAtk && items[moveIndex].hp_buff != null && items[moveIndex].hp_buff != 0) {
+                if (player.get('hp') + items[moveIndex].hp_buff < maxPlayerHealth) {
+                    player.set('hp',player.get('hp') + items[moveIndex].hp_buff);
+                }
+                else {
+                    player.set('hp', maxPlayerHealth);
+                }
+            }
+            else if (!isAtk && items[enemyIndex].atk_buff != null && items[moveIndex].atk_buff != 0) {
+                player.set('atk', items[moveIndex].atk_buff);
+            }
+            else if (!isAtk && items[enemyIndex].def_buff != null && items[moveIndex].def_buff != 0) {
+                player.set('def', items[moveIndex].def_buff);
+            }
         }
     }
 }
@@ -227,7 +243,7 @@ function enemiesTurn() {
 function displayEnemies() {
     var enemyIconPosition = document.getElementById('characters');
     for (var i = 0; i < enemies.length; i++) {
-        enemyIconPosition.innerHTML += '<div class="col" id="' + enemies[i].name + '"> <div class="row">' + enemies[i].name + '<div id="' + enemies[i].name + ' HP">' +
+        enemyIconPosition.innerHTML += '<div class="col" id="' + enemies[i].name + '"> <div class="row name">' + enemies[i].name + '</div><div class="row" id="' + enemies[i].name + ' HP">' +
         enemies[i].hp + "/" + enemies[i].hp + '</div> <div class="row"> <div class = "p-10"> <image src="' + enemies[i].icon + 
             '" class="float-start"> <break> </div> </div> </div>';
     }
@@ -284,3 +300,54 @@ function isAttack(index) {
         return false;
     }
 }
+
+//checkWinOrLoss()
+//Returns 1 for win, 0 for loss, -1 for still going
+function checkWinOrLoss() {
+    var enemiesDead = true;
+    for (var i = 0; i < enemies.length; i++) {
+        if (enemies[i].hp > 0) {
+            enemiesDead = false;
+            i = enemies.length;
+        }
+    }
+    if (enemiesDead) {
+        return 1;
+    }
+
+    else if (player.get('hp') <= 0) {
+        return 0;
+    }
+    
+    else {
+        return -1;
+    }
+}
+
+function updateLog(name, move) {
+    logPosition = document.getElementById("log");
+    logPosition.innerHTML += '<li>' + name + ' used ' + move + "</li>";
+}
+
+function generateEndScreen(playerWon) { 
+    var game = document.getElementById('game');
+    game.innerHTML += '<div class="container px-5">';
+    if (!playerWon) {
+        game.innerHTML += '<div class="row justify-content-center"> <div class = "col-4 align-self-center game-condition">You Have Fallen </div></div>';
+        game.innerHTML += '<div class="row justify-content-center"> <div class = "col-4 align-self-center align-content-center">';
+        game.innerHTML += '<div class="row justify-content-center"><div class="col-4 endScreen text-center align-self-center">' +
+                          '<form action="returnToMap" method="POST"><div class="mb-3">' +
+                          '<input type="hidden" class="form-control" name="winCondition" value="0"></div>' + '<button class ="returnButton">Return to the Map</button></form></div></div></div>';
+    }
+    else {
+        game.innerHTML += '<div class="row justify-content-center"><div class="col-4 align-self-center game-condition"> You Have Ascended to Victory </div></div>';
+        game.innerHTML += '<div class="row justify-content-center"> <div class="col-4 endScreen align-self-center"> <div class="dropsTitle"> Spoils of Battle </div> <ul id="drops"> ';
+        game.innerHTML += '<div class="row justify-content-center"><div class="col-4 endScreen text-center align-self-center">' +
+                          '<form action="returnToMap" method="POST"><div class="mb-3">' +
+                          '<input type="hidden" class="form-control" name="winCondition" value="1"></div>' + '<button class ="returnButton">Return to the Map</button></form></div></div></div>';
+        var drops = document.getElementById('drops');
+        for (var i = 0; i < 3; i++) {
+            drops.innerHTML += '<li> Item ' + i +  '</li>';
+        }
+    }
+} 
