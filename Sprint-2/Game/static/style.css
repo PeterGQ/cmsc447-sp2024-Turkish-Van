@@ -65,8 +65,18 @@ body, html {
 }
 
 .item-container h2{
-    margin: 150px 140px auto;
+    margin: 50px 130px auto;
     position:absolute;
+    padding:-20px;
+    font-size: 220%;
+    font-family: brush script mt, cursive;
+    margin-bottom: 0px; /* Adjust as needed */
+    border-bottom: 1px solid black; /* Line style */
+    padding-bottom: 0px; /* Adjust spacing between text and line */
+}
+.item-container2 h2{
+    margin: 0px 130px auto;
+    position:absolute;*/
     padding:-20px;
     font-size: 220%;
     font-family: brush script mt, cursive;
@@ -80,6 +90,12 @@ body, html {
     grid-template-columns: repeat(10, 1fr);
     gap:18px;
     scrollbar-width: none;
+    margin-top:130px;
+    margin-left:10px;
+    background-color:rgba(225, 225, 225, .7)
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem;
+    border: 2px solid black;
     /*aspect-ratio: 16/9;
     */overflow-x:auto;
     scroll-snap-type: x mandatory;
@@ -104,6 +120,43 @@ body, html {
     position:relative;
     /*background-color:rgba(230, 172, 101)*/
 }
+
+.slider1 {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap:18px;
+    scrollbar-width: none;
+    margin-top:80px;
+    margin-left:10px;
+    background-color:rgba(225, 225, 225, .7)
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem;
+    border: 2px solid black;
+    /*aspect-ratio: 16/9;
+    */overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    scroll-behaviour: smooth;/*
+    width:60px;
+    height:80px;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem*/
+}
+
+.slider1::-webkit-scrollbar {
+    display: none;
+}
+
+.slider1 img {
+    flex: 1 0 100%;
+    scroll-snap-align:start;
+    width:50px;
+    height:60px;
+    object-fit:contain
+    /*overflow:hidden;
+    position:relative;
+    /*background-color:rgba(230, 172, 101)*/
+}
+
 
 /*item info*/
 .item-details

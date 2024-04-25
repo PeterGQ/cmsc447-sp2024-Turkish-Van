@@ -12,7 +12,7 @@ def get_item_info_from_db(image_id):
     conn = sqlite3.connect('items.db')
     cursor = conn.cursor()
     # Assuming 'image_id' is the name of the item
-    cursor.execute('SELECT name, description, hp_buff, atk_buff, def_buff, duration, cooldown, price FROM shop_items WHERE shop_id = ?', (image_id,))
+    cursor.execute('SELECT description, hp_buff, atk_buff, def_buff, duration, cooldown, price FROM shop_items WHERE name = ?', (image_id,))
 
     item = cursor.fetchone()
     conn.close()
@@ -31,12 +31,12 @@ def get_item_info():
 
     print("name")
     # Assuming the database schema matches the returned columns
-    name, description, hp_buff, atk_buff, def_buff, duration, cooldown, price = item
-    print("name")
+    description, hp_buff, atk_buff, def_buff, duration, cooldown, price = item
+    print(description)
 
     # Return item information as JSON response
     return jsonify({
-        'name': name,
+        # 'name': name,
         'description': description,
         'hp_buff': hp_buff,
         'atk_buff': atk_buff,

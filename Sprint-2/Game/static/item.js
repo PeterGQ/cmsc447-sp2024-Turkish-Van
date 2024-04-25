@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to handle item click and fetch data
   function handleItemClick(event) {
-    const imageId = event.currentTarget.getAttribute('data-imageid');
+    const imageId = event.currentTarget.getAttribute('id');
     const fetchURL = `/get_item_info?image_id=${encodeURIComponent(imageId)}`;
 
     fetch(fetchURL) // Send GET request with image_id
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(data => {
         // Update name and description elements
-        itemName.textContent = data.name;
+        itemName.textContent = imageId;
         itemDescription.textContent = data.description;
 
         // Update itemDetails list
