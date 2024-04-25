@@ -27,12 +27,10 @@ def combat():
     items_json = json.dumps(itemsArray)
     enemies_json = json.dumps(enemiesArray)
     player_json = json.dumps(currentPlayer)
-    print(enemiesArray)
     return render_template('combat.html', enemiesData=enemies_json, itemData=items_json, playerData=player_json)
 
 @app.route('/returnToMap/', methods = ['GET', 'POST'])
 def returnToMap():
-    print("in function")
     if request.method == 'POST':
         winCondition = request.form['winCondition']
         #If the user won the game
@@ -76,7 +74,6 @@ def returnToMap():
                         conn2.commit()
                     elif (not isMove and (drop in currentPlayer['inventory'])):
                         item = conn2.execute('SELECT * FROM user_inventory WHERE user = ? AND item_name = ?', (currentPlayer['username'], drop)).fetchall()
-                        print(item)
                         newAmount = item[0][2] + enemy['drops'][drop]
                         conn2.execute('UPDATE user_inventory SET quantity = ? WHERE user = ? AND item_name = ?', (newAmount, currentPlayer['username'], drop))
                         conn2.commit()
@@ -87,8 +84,7 @@ def returnToMap():
             conn2.execute('UPDATE logins SET player_waveflag = ? WHERE username = ?', (currentPlayer['wave'], currentPlayer['username']))
             conn2.commit()
             
-            conn2.close() 
-            print(enemies)
+            conn2.close()
             
     return render_template('dummy.html')
 
@@ -127,7 +123,6 @@ def getEnemiesForWave(enemyData):
     enemiesArray = []
     for entry in enemyData:
         waveString = str(currentPlayer['wave']) + ":"
-        print(entry)
         if (waveString in entry[1]):
             waveNumberIndex = entry[1].find(waveString)
             numEnemyType = int(entry[1][(waveNumberIndex + 2):(waveNumberIndex+3)])
@@ -152,11 +147,9 @@ def getEnemyDrops(enemyName):
     conn = sqlite3.connect('enemies.db')
     
     rawData = conn.execute('SELECT * FROM enemy_drops WHERE enemy = ?', (enemyName,)).fetchall()
-    print(rawData)
     enemyDrops = {}
     #Only getting the move names
     for entry in rawData:
-        print(enemyName)
         enemyDrops[entry[1]] = entry[2]
     return enemyDrops
     
