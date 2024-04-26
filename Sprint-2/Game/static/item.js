@@ -1,44 +1,6 @@
-//document.addEventListener('DOMContentLoaded', function () {
-//    const items = document.querySelectorAll('.item');
-//    const itemDetails = document.getElementById('itemDetails');
-//
-//    items.forEach(item => {
-//        item.addEventListener('click', async function () {
-//            const itemId = this.getAttribute('data-id');
-//            try {
-//                const response = await fetch('/get_item_info', {
-//                    method: 'POST',
-//                    headers: {
-//                        'Content-Type': 'application/json'
-//                    },
-//                    body: JSON.stringify({ id: itemId })
-//                });
-//                if (!response.ok) {
-//                    throw new Error('Network response was not ok');
-//                }
-//                const itemInfo = await response.json();
-//                // Update itemDetails box content
-//                itemDetails.innerHTML = `
-//                    <p>Price: ${itemInfo.price}</p>
-//                    <p>Buffs: ${itemInfo.buffs}</p>
-//                    <p>Side Effects: ${itemInfo.sideEffects}</p>
-//                `;
-//                itemDetails.style.display = 'block'; // Show the box
-//            } catch (error) {
-//                console.error('Error:', error);
-//            }
-//        });
-//    });
-//
-//    // Close the itemDetails box when clicking outside of it
-//    document.addEventListener('click', function (event) {
-//        if (!itemDetails.contains(event.target)) {
-//            itemDetails.style.display = 'none'; // Hide the box
-//        }
-//    });
-//});'
-
-document.addEventListener('DOMContentLoaded', function () {
+var itemPrice = "0";
+var itemID = "";
+  document.addEventListener('DOMContentLoaded', function () {
   const itemImages = document.querySelectorAll('.image-item');
   const itemName = document.getElementById('itemName');
   const itemDescription = document.getElementById('itemDescription');
@@ -47,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to handle item click and fetch data
   function handleItemClick(event) {
     const imageId = event.currentTarget.getAttribute('id');
+    itemID = imageId;
     const fetchURL = `/get_item_info?image_id=${encodeURIComponent(imageId)}`;
 
     fetch(fetchURL) // Send GET request with image_id
@@ -65,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
         itemDetails.innerHTML = ''; // Clear existing content
         for (const key in data) {
           if (key !== 'name' && key !== 'description' && data.hasOwnProperty(key)) {
+            if (key == 'price'){
+                itemPrice = data[key]
+            }
             const value = data[key];
             const listItem = document.createElement('li');
             listItem.textContent = `${key}: ${value}`;
@@ -83,40 +49,49 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+function Confirm(){
+if(playerCurrency >=  itemPrice){
+    document.getElementById('funds').textContent = "How many would you like to buy?";
+    const updateCurrency = playerCurrency - itemPrice;
+    console.log("Confirm")
+    const requestData = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ currency: updateCurrency, item: itemID }),
+    };
 
-//document.addEventListener('DOMContentLoaded', function () {
-//  const itemImage = document.getElementById('Potion of Healing');
-//  const itemDetails = document.getElementById('shopItemDetails');
-//  const itemName = document.getElementById('itemName');
-//  const itemDescription = document.getElementById('itemDescription');
-//
-//  itemImage.addEventListener('click', function () {
-//    const fetchURL = `/get_item_info?image_id=${encodeURIComponent(itemImage.id)}`;
-//
-//    fetch(fetchURL) // Send GET request with image_id
-//      .then(response => {
-//        if (!response.ok) {
-//          throw new Error('Network response was not ok');
-//        }
-//        return response.json();
-//      })
-//      .then(data => {
-//        // Update itemDetails with received data
-//        itemName.textContent = "Name:"+data.name;
-//        itemDescription.textContent = "Description:"+data.description;
-//        itemDetails.innerHTML = ''; // Clear existing content
-//        for (const key in data) {
-//          if (key !== 'name' && key !== 'description' && data.hasOwnProperty(key)) {
-//            const value = data[key];
-//            const listItem = document.createElement('li');
-//            listItem.textContent = `${key}: ${value}`;
-//            itemDetails.appendChild(listItem);
-//          }
-//        }
-//      })
-//      .catch(error => {
-//        console.error('Error:', error);
-//      });
-//  });
-//
-//});
+  // Make the fetch request
+  fetch('/update_currency', requestData)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Server response:', data);
+      playerCurrency = data.currency;
+      console.log(playerCurrency);
+      if (data && data.success && typeof data.currency !== 'undefined') {
+          const receivedCurrency = data.currency; // Extract currency value
+          console.log('Received Currency:', receivedCurrency);
+
+          // Now you can use 'receivedCurrency' variable as needed
+          // For example, update UI with the new currency value
+          document.getElementById('currencyDisplay').textContent = "Player Currency: " + receivedCurrency;
+        } else {
+          throw new Error('Invalid server response');
+        }
+      // Handle success response as needed
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+      // Handle errors
+    });
+  }
+  else{
+    document.getElementById('funds').textContent = "Insufficient Funds";
+  }
+}

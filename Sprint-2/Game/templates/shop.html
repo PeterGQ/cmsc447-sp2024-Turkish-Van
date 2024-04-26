@@ -41,11 +41,12 @@
             </div>
             <div id="itemDetails" class="item-details">
                 <div class="confirm-item">
-                    <h2>How many would you like to buy?</h2>
-                    <button class="btn1">
+                    <h2 id="funds">How many would you like to buy?</h2>
+                    <p id="currencyDisplay">Player Currency: {{ currency }}</p>
+                    <button class="btn1" onclick="Confirm()">
                         Confirm
                     </button>
-                    <button class="btn2">
+                    <button class="btn2" onclick="Leave()">
                         Leave
                     </button>
                 </div>
@@ -64,6 +65,9 @@
             </div>
         </div>
     </div>
+     <script>
+        var playerCurrency = {{ currency }};
+    </script>
     <script src="{{ url_for('static', filename='item.js') }}"></script>
 </body>
 </html>
