@@ -1,0 +1,34 @@
+{
+    "tilewidth": 32,
+    "tileheight": 32,
+    "width": 10,
+    "height": 10,
+    "layers": [
+        {
+            "type": "tilelayer",
+            "name": "Ground",
+            "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* additional data */ ],
+            "visible": true
+        },
+        {
+            "type": "tilelayer",
+            "name": "Obstacles",
+            "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* additional data */ ],
+            "visible": true
+        }
+    ],
+    "tilesets": [
+        {
+            "name": "tileset",
+            "image": "tileset.png",
+            "imagewidth": 64,
+            "imageheight": 64,
+            "tilewidth": 32,
+            "tileheight": 32,
+            "spacing": 0,
+            "margin": 0,
+            "tilecount": 4,
+            "columns": 2
+        }
+    ]
+}
