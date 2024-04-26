@@ -156,8 +156,8 @@ def getEnemyDrops(enemyName):
 def getAllItems(itemData):
     itemsArray = []
     for entry in itemData:
-        itemsArray.append({'name': entry[0], 'description': entry[1], 'identifier': entry[2], 'icon': entry[3], 'hp_buff': entry[4],
-                    'atk_buff': entry[5], 'def_buff': entry[6], 'duration': entry[7], 'cooldown': entry[8], 'price': entry[9]})
+        itemsArray.append({'name': entry[0], 'description': entry[1], 'identifier': entry[2], 'icon': entry[3], 'atk': entry[4], 'hp_buff': entry[5],
+                    'atk_buff': entry[6], 'def_buff': entry[7], 'duration': entry[8], 'cooldown': entry[9], 'price': entry[10]})
     return itemsArray
     
 
