@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        @font-face {
+            font-family: "Ancient Modern Tales";
+            src: url("/static/fonts/ancientmoderntales-a7po-webfont.woff2") format('woff2'),
+                url("/static/fonts/ancientmoderntales-a7po-webfont.woff") format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Breathe Fire';
+            src: url("/static/fonts/breathefire-65pg-webfont.woff2") format('woff2'),
+                url("/static/fonts/breathefire-65pg-webfont.woff") format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body{
+            background-image: url("/static/images/8bit\ Temp\ Background.jpg");
+            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #Game_Title{
+            position: relative;
+            margin-top: -100px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h3{
+            color: white;
+            font-family: 'Ancient Modern Tales';
+            letter-spacing: 1.2px;
+            text-align: center;
+            margin-top: -150px;
+            font-size: 40px;
+            font-weight: lighter;
+        }
+
+        label{
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+            color: white;
+            font-family: 'Ancient Modern Tales';
+            font-weight: 30;
+            font-size: 25px;
+            text-align: center;
+        }
+
+        input{
+            display: block;
+            width: 50%;
+            margin-bottom: 35px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            position: relative;
+            margin-right: auto;
+            margin-left: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            background-color: rgba(47, 61, 143, 0.6);
+            color: white;
+
+        }
+
+        button{
+          background-color: #2f3d8f;  
+          border: none;
+          color: white;
+          padding: 20px;
+          text-align: center;
+          display: block;
+          font-size: 16px;
+          margin-left: auto;
+          margin-right: auto;
+          font-family: 'Ancient Modern Tales';
+          border-radius: 8px;
+        }
+
+        p{
+            color: white;
+            font-family: 'Ancient Modern Tales';
+            letter-spacing: 1.2px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        a{
+            color: whitesmoke;
+        }
+
+        .alert{
+            background-color:rgba(47, 61, 143, 0.6);
+            border-color: whitesmoke;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            position: relative;
+            margin-right: auto;
+            margin-left: auto;
+            box-sizing: border-box;
+            font-weight: bolder;
+            font-size: 18px;
+            padding: 10px;
+        }
+
+
+    </style>
+    <head>
+        <title>
+
+        </title>
+    </head>
+    <body>
+        <img id = "Game_Title" src = "/static/images/Logo.png">
+
+        <h3>Registration</h3>
+
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ category }}">
+                {{message}}
+            </div>
+        {% endfor %}
+        
+        <form action = "/register" method = "POST">
+            <label for = "username">
+                Username
+            </label>
+            <input type = "text"
+                    id = "username"
+                    name = "username"
+                    placeholder = "Enter your Username" required>
+
+            <label for = "password">
+                Password
+            </label>
+            <input type = "password"
+                    id = "password"
+                    name = "password"
+                    placeholder = "Enter your Password" required>
+
+            <label for = "password_check">
+                Confirm Password
+            </label>
+            <input type = "password"
+                    id = "password_check"
+                    name = "password_check"
+                    placeholder = "Enter your Password" required>
+
+            <div class = "wrap">
+                <button type = "submit">
+                    Submit
+                </button>
+            </div>
+
+            <p>
+                Already Have An Account? Continue Your Adventure
+                
+                <a href= "{{ url_for('login') }}">
+                    Login In
+                </a>
+            </p>
+        </form>
+    </body>
+</html>
