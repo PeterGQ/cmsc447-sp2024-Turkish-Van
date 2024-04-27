@@ -42,6 +42,9 @@ item_list = [
     ("Goblin Spellshield", "A move inspired by wizard goblins that makes the player invincible for 2 turns. It cannot be used for the next 10 turns.", "FM_SH", r"Icons\Goblin Spellshield.png", 0, None, None, 0, 2, 10, 100),
 
 ]
+cur.executemany("INSERT INTO game_items VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", item_list)
+conn.commit()
+
 
 cur.execute("""CREATE TABLE shop_items (
             shop_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,3 +64,5 @@ cur.execute("SELECT * FROM game_items WHERE identifer LIKE '%SH%'")
 rows = cur.fetchall()
 cur.executemany("INSERT INTO shop_items (name, description, identifer, icon, atk, hp_buff, atk_buff, def_buff, duration, cooldown, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ", rows)
 conn.commit()
+
+conn.close()

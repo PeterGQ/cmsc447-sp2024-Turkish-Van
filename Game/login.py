@@ -1,4 +1,5 @@
 import sqlite3
+from sqlite3 import Error
 from flask import Flask, render_template, request, flash, redirect, url_for, session, json
 from flask_session import Session
 from flask_bcrypt import Bcrypt, check_password_hash, generate_password_hash
@@ -8,15 +9,16 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 current_user = ""
 current_player_data = None
+starting_moves = ['Sword Slash', 'Guard Stance', 'Restorative Strike']
+starting_stats = [100, 1, 1, 100, 0, 0, 1]
 
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
-@app.route('/main_menu')
-def main_menu():
-    return render_template("mainMenu.html")
-    
+##----------------------------------------------------------------------
+#LOGIN AND REGISTRATION
+#-----------------------------------------------------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     conn_users = sqlite3.connect('user_info.db')
@@ -106,6 +108,57 @@ def login():
 
     return render_template('login.html')
 
+#----------------------------------------------------------------------------------
+# MAIN MENU
+#----------------------------------------------------------------------------------
+@app.route('/main_menu')
+def main_menu():
+    return render_template("mainMenu.html")
+
+@app.route('/load-game')
+def load_user():
+    print(current_user)
+    loadPlayer(current_user)
+    print(current_player_data['moves'])
+    if (len(current_player_data['moves']) == 0):
+        flash('You haven\'t started a game yet!')
+        return redirect(url_for('main_menu'))
+    return redirect(url_for('combat'))
+
+@app.route('/new-game')
+def new_game():
+    global starting_stats
+    global starting_moves
+    conn_users = sqlite3.connect('user_info.db')
+    #Deleting any data that's there
+    #try:
+    conn_users.execute("DELETE FROM user_moves WHERE user = ?", (current_user,))
+    conn_users.commit()
+    #except Error as e:
+    #    print(f"No data from user_moves to delete")
+    #    conn_users.rollback()
+    try:
+        conn_users.execute("DELETE FROM user_inventory WHERE user = ?", (current_user,))
+        conn_users.commit()
+    except Error as e:
+        print(f"No data from user_inventory to delete")
+        conn_users.rollback()
+        
+    #Adding starting moves and setting player data to default, because they shouldn't have anything
+    conn_users.execute('UPDATE logins SET player_health = ?, player_atk = ?, player_def = ?, player_currency = ?, player_kills = ?, player_deaths = ?, player_waveflag = ?'
+                       + 'WHERE username = ?', (starting_stats[0], starting_stats[1], starting_stats[2], starting_stats[3], starting_stats[4], starting_stats[5], starting_stats[6], current_user))
+    for i in range(len(starting_moves)):
+        conn_users.execute("INSERT INTO user_moves (user, move_name) VALUES (?, ?)",(current_user, starting_moves[i]))
+    conn_users.commit()
+    conn_users.close()
+    
+    loadPlayer(current_user)
+    return redirect(url_for('combat'))
+
+
+#----------------------------------------------------------------------------------
+# LEADERBOARD
+#----------------------------------------------------------------------------------
 @app.route('/leaderboard')
 def leaderboard():
     conn_users = sqlite3.connect('user_info.db')
@@ -139,15 +192,11 @@ def clear_session():
     return redirect(url_for('login'))
 current_player_data = {}
 
-@app.route('/load-game')
-def load_user():
-    print(current_user)
-    loadPlayer(current_user)
-    return redirect(url_for('combat'))
-
-@app.route("/combat", methods = ['GET'])
+#----------------------------------------------------------------------------
+# COMBAT
+#------------------------------------------------------------------------------
+@app.route("/combat")
 def combat():
-    print("in function")
     conn1 = sqlite3.connect('items.db')
     conn2 = sqlite3.connect('enemies.db')
     
@@ -177,25 +226,23 @@ def returnToMap():
             conn1 = sqlite3.connect('enemies.db')
             conn2 = sqlite3.connect('user_info.db')
             conn3 = sqlite3.connect('items.db')
+            
+            
             enemyData = conn1.execute('SELECT * FROM enemies').fetchall()
             itemData =  conn3.execute('SELECT * FROM game_items').fetchall()
             conn1.close()
             conn3.close()
             
-            #Converting it to usable data
+            
             enemies = getEnemiesForWave(enemyData)
             items = getAllItems(itemData)
             
             
             #Getting gold and rewards for player
-            totalEarned = 0 #
+            totalEarned = 0
             for enemy in enemies:
-                #Amount of gold earned
                 totalEarned += enemy['goldDrop']
-                
-                #Adding item/move drops to user inventory
                 for drop in enemy['drops'].keys():
-                    #Checking whether it's a move or item
                     for i in range(len(items)):
                         isMove = False
                         if (drop == items[i]['name']):
@@ -204,23 +251,21 @@ def returnToMap():
                                 break
                             else:
                                 break
-                    #Inserting the move drop if the user doesn't have it already
                     if (isMove and (drop not in current_player_data['moves'])):
                         current_player_data['moves'].append(drop)
                         conn2.execute('INSERT INTO user_moves VALUES (?, ?)', (current_player_data['username'], drop))
                         conn2.commit()
-                    #If the player doesn't have this item yet, make a new entry
+                    #If the player doesn't have this item yet
                     elif (not isMove and (drop not in current_player_data['inventory'])):
                         conn2.execute('INSERT INTO user_inventory VALUES (?, ?, ?)', (current_player_data['username'], drop, enemy['drops'][drop]))
+                        current_player_data['inventory'][drop] = enemy['drops'][drop]
                         conn2.commit()
-                    #If the player has this entry, update the quantity in the database
                     elif (not isMove and (drop in current_player_data['inventory'])):
                         item = conn2.execute('SELECT * FROM user_inventory WHERE user = ? AND item_name = ?', (current_player_data['username'], drop)).fetchall()
                         newAmount = item[0][2] + enemy['drops'][drop]
                         conn2.execute('UPDATE user_inventory SET quantity = ? WHERE user = ? AND item_name = ?', (newAmount, current_player_data['username'], drop))
                         conn2.commit()
-                        
-            #Updating the users gold
+            
             current_player_data['currency'] += totalEarned
             conn2.execute('UPDATE logins SET player_currency = ? WHERE username = ?', (current_player_data['currency'], current_player_data['username']))
             current_player_data['wave'] += 1
@@ -229,7 +274,7 @@ def returnToMap():
             
             conn2.close()
             
-    redirect(url_for('main_menu'))
+    return redirect(url_for('main_menu'))
 
 def loadPlayer(user):
     conn = sqlite3.connect('user_info.db')
@@ -237,7 +282,7 @@ def loadPlayer(user):
     loginInfo = conn.execute('SELECT * FROM logins WHERE username = ?', (user,)).fetchone()
     inventory = conn.execute('SELECT * FROM user_inventory WHERE user = ?', (user,)).fetchall()
     moves = conn.execute('SELECT * FROM user_moves WHERE user = ?', (user,)).fetchall()
-    treasure = conn.execute('SELECT * FROM user_treasure WHERE user = ?', (user,)).fetchall()
+    
     
     current_player_data['username'] = loginInfo[0]
     current_player_data['hp'] = loginInfo[2]
@@ -249,16 +294,12 @@ def loadPlayer(user):
     current_player_data['wave'] = loginInfo[8]
     current_player_data['inventory'] = {}
     current_player_data['moves'] = []
-    current_player_data['treasure'] = []
     
     for item in inventory:
         current_player_data['inventory'][item[1]] = item[2]
     
     for move in moves:
         current_player_data['moves'].append(move[1])
-    
-    for relic in treasure:
-        current_player_data['treasure'].append(relic[1])
     
     conn.close()
 
@@ -299,13 +340,10 @@ def getEnemyDrops(enemyName):
 def getAllItems(itemData):
     itemsArray = []
     for entry in itemData:
-        itemsArray.append({'name': entry[0], 'description': entry[1], 'identifier': entry[2], 'icon': entry[3], 'hp_buff': entry[4],
-                    'atk_buff': entry[5], 'def_buff': entry[6], 'duration': entry[7], 'cooldown': entry[8], 'price': entry[9]})
+        itemsArray.append({'name': entry[0], 'description': entry[1], 'identifier': entry[2], 'icon': entry[3], 'atk': entry[4], 'hp_buff': entry[5],
+                    'atk_buff': entry[6], 'def_buff': entry[7], 'duration': entry[8], 'cooldown': entry[9], 'price': entry[10]})
     return itemsArray
     
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
-if __name__ == '__main__':
     app.run(debug=True)

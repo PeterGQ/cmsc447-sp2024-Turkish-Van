@@ -156,7 +156,7 @@
 
   <h1>Welcome To The Game</h1>
 
-  <button onclick="newGame()">New Game</button>
+  <a href="{{url_for('new_game')}}">New Game</a>
   <a href = "{{url_for('load_user')}}"> Load Game</a>
   <a href = "{{url_for('leaderboard')}}"> View Leaderboard</a>
   <a href="{{url_for('clear_session')}}" onclick="return confirm('Are you sure you want to exit the game?')">Exit Game</a>
