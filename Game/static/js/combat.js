@@ -12,6 +12,7 @@ var cooldowns = new Map(); //Map to keep track of cooldowns per character (key i
 //importItems()
 //Imports the items database to be referenced later
 function importItems(data) {
+    console.log(data);
     items = JSON.parse(data);
     console.log(items);
 }
@@ -96,7 +97,10 @@ function getConfirmation(aOrI, index) {
             document.getElementById(lastChoice).style.color = "#9290C3";
         }
         lastChoice = player.get("moves")[index];
+        console.log(lastChoice);
         var lastChoiceIndex = getItemIndex(lastChoice);
+        console.log(lastChoiceIndex);
+        console.log(isAttack(lastChoiceIndex));
         //Printing enemies to attack
         if (isAttack(lastChoiceIndex)) {
             htmlElement.innerHTML = ('<li> <a class = \"colTitle\" aria-current="page"> Enemies </a> </li>');
@@ -160,6 +164,7 @@ function playerTurn(enemyIndex) {
     var damageAmount = 0;
     updateLog(player.get('username'), lastChoice);
     if (isAttack && items[moveIndex].atk_buf == null) {
+        console.log(enemyIndex);
         damageAmount = (player.get('atk'))/(enemies[enemyIndex].def) * baseAtkDamage;
         console.log(damageAmount); 
         enemies[enemyIndex].hp -= damageAmount;
@@ -228,10 +233,10 @@ function enemiesTurn() {
                     player.set('hp', maxPlayerHealth);
                 }
             }
-            else if (!isAtk && items[enemyIndex].atk_buff != null && items[moveIndex].atk_buff != 0) {
+            else if (!isAtk && items[moveIndex].atk_buff != null && items[moveIndex].atk_buff != 0) {
                 player.set('atk', items[moveIndex].atk_buff);
             }
-            else if (!isAtk && items[enemyIndex].def_buff != null && items[moveIndex].def_buff != 0) {
+            else if (!isAtk && items[moveIndex].def_buff != null && items[moveIndex].def_buff != 0) {
                 player.set('def', items[moveIndex].def_buff);
             }
         }
@@ -290,10 +295,8 @@ function getItemIndex(itemName) {
 //isAttack
 //Checks if a move is an attack or not
 function isAttack(index) {
-    if (items[index].atk_buf == null && items[index].def_buf == null && items[index].hp_buff == null) {
-        return true;
-    }
-    else if (items[index].atk_buf != null && items[index].def_buf == null && items[index].hp_buff == null) {
+    console.log(items[index].atk);
+    if (items[index].atk > 0) {
         return true;
     }
     else {
