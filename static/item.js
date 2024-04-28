@@ -49,6 +49,27 @@ var itemID = "";
   });
 });
 
+function Leave(){
+    console.log("Proceeding with game reset."); // Log continuation after confirmation
+    fetch('/start-map', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/gameMap';
+            } else {
+                throw new Error('Network response was not ok. Status: ' + response.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 function Confirm(){
 if(playerCurrency >=  itemPrice){
     document.getElementById('funds').textContent = "How many would you like to buy?";

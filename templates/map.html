@@ -6,14 +6,15 @@
     <title>Map and Player Info</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <div class="map-container">
             <img src="{{ url_for('static', filename='Map.jpg') }}" alt="Map" class="Map">
             <div class="button-container">
-                <button class="btn1">Battle</button>
+                <button id="btn1" class="btn1">Battle</button>
                 <img src="{{ url_for('static', filename='Battle.jpg') }}" alt="Battle" class="Battle">
-                <button class="btn2">Safe Haven</button>
+                <button id="btn2" class="btn2">Safe Haven</button>
                 <img src="{{ url_for('static', filename='SafeHaven.jpg') }}" alt="SafeHaven" class="SafeHaven">
             </div>
         </div>
@@ -53,6 +54,44 @@
             </div>
         </div>
     </div>
-    <script src="game.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const btn1 = document.getElementById("btn1");
+    const btn2 = document.getElementById("btn2");
+
+    btn1.addEventListener("click", function() {
+        sendDataToFlask("btn1_clicked");
+    });
+
+    btn2.addEventListener("click", function() {
+        sendDataToFlask("btn2_clicked");
+    });
+
+    function sendDataToFlask(buttonId) {
+        console.log("clicked");
+        fetch('/start-battle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ buttonId: buttonId }),
+        })
+        .then(response => {
+            if (response.ok) {
+                // Request successful
+                window.location.href = '/shop';
+                // Redirect to the rendered HTML file
+            } else {
+                // Handle error
+                console.error('Error:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Network error:', error);
+        });
+    }
+});
+    </script>
+<!--    <script src="game.js"></script>-->
 </body>
 </html>
