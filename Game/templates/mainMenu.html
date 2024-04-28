@@ -181,6 +181,7 @@
   <a href="{{url_for('clear_session')}}" onclick="return confirm('Are you sure you want to exit the game?')">Exit Game</a>
 
 <script>
+    var newPlayerFlag = {{newPlayerFlag}}
     document.body.addEventListener("click", function(event) {
         if (event.target.id === "newGameBtn") {
           newGame();
@@ -245,7 +246,12 @@
   
   function hasExistingGameData() {
       // Implement checking for existing game data
-      return false; // Replace with actual check for existing data
+      if (newPlayerFlag == 0) {
+        return true;
+      }
+      else {
+        return false;
+      }
   }
 
   </script>

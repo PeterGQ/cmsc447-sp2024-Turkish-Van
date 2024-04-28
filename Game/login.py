@@ -113,7 +113,12 @@ def login():
 #----------------------------------------------------------------------------------
 @app.route('/main_menu')
 def main_menu():
-    return render_template("mainMenu.html")
+    loadPlayer(current_user)
+    newPlayer = 0
+    if (len(current_player_data['inventory']) == 0 and len(current_player_data['moves']) == 3 and current_player_data['currency'] == 100):
+        newPlayer = 1
+    
+    return render_template("mainMenu.html", newPlayerFlag = newPlayer)
 
 @app.route('/load-game', methods = ['POST'])
 def load_user():
