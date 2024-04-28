@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f872808d-f5e5-40ef-bdf3-7d3ab20959f4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Divine Blessing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Elixir of Fortitude.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Elixir of Vitality.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Blood Vial.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Cleave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Crown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Dagger.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Spellshield.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Teeth Charm.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin War Axe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Goblin Warcry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Guard Stance.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Guardians Breastplate.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Herbal Tonic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Iron Skin Potion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Leather Armlet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Longsword Upgrade Balanced Hilt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Longsword Upgrade Sharpened Blade.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Potion of Healing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Restorative Strike.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Shop1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Shop2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Shop3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Sword Slash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Warrior Skull.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Warrior's Draught.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Wizard's Spellbook.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/Wizard's Staff.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/combatBackground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/enemy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/item.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/static/styles2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sprint-2/Game/templates/shop.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../login.py" beforeDir="false" afterPath="$PROJECT_DIR$/../login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/mainMenu.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/mainMenu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../templates/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/../templates/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user_info.db" beforeDir="false" afterPath="$PROJECT_DIR$/../user_info.db" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2fhqkToP6w5xAVNc4intD5iMdMX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/pande/CMSC 447/Sprint2/Game"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-5a2391486177-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13763.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f872808d-f5e5-40ef-bdf3-7d3ab20959f4" name="Changes" comment="" />
+      <created>1714263799289</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1714263799289</updated>
+    </task>
+    <servers />
+  </component>
+</project>

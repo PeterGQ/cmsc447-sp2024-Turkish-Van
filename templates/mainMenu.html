@@ -76,16 +76,28 @@
 
   }
 
-  button{
+  #newGameBtn{
     background-color: #2f3d8f;  
     border: none;
     color: white;
     padding: 20px;
     text-align: center;
-    display: block;
     font-size: 16px;
-    margin-left: auto;
-    margin-right: auto;
+    position: absolute;
+    margin-top: 30px;
+    right: 790px;
+    font-family: 'Ancient Modern Tales';
+    border-radius: 8px;
+  }
+  #loadGameBtn{
+    background-color: #2f3d8f;
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 30px;
+    margin-left: 790px;
     font-family: 'Ancient Modern Tales';
     border-radius: 8px;
   }
@@ -156,13 +168,18 @@
 
   <h1>Welcome To The Game</h1>
 
-  <button onclick="newGame()">New Game</button>
-  <button onclick="loadGame()">Load Game</button>
+  <button id="newGameBtn">New Game</button>
+  <button id="loadGameBtn" onclick="loadGame()">Load Game</button>
   <a href = "{{url_for('leaderboard')}}"> View Leaderboard</a>
   <a href="{{url_for('clear_session')}}" onclick="return confirm('Are you sure you want to exit the game?')">Exit Game</a>
 
 <script>
   // Detailed JavaScript functions for game actions
+  document.body.addEventListener("click", function(event) {
+  if (event.target.id === "newGameBtn") {
+    newGame();
+  }
+});
   function newGame() {
     console.log("New game button clicked."); // Log when function is triggered
   
@@ -176,24 +193,23 @@
     }
   
     console.log("Proceeding with game reset."); // Log continuation after confirmation
-    fetch('/reset-game', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
-    })
-    .then(response => {
-        console.log("Reset game response received."); // Log when response is received
-        return response.json();
-    })
-    .then(data => {
-        console.log('New game started:', data); // Log the data received
-        window.location.href = '/game.html'; // Redirect or initialize game state
-    })
-    .catch((error) => {
-        console.error('Error during game reset:', error); // Log any errors
-    });
+    fetch('/start-new-game', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/gameMap';
+            } else {
+                throw new Error('Network response was not ok. Status: ' + response.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
   
@@ -218,7 +234,7 @@
       // Implement checking for existing game data
       return false; // Replace with actual check for existing data
   }
-
+  console.log("Adding event listener to newGameBtnn");
   </script>
 </body>
 </html>
