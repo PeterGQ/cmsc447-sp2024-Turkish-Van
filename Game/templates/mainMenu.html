@@ -119,6 +119,25 @@
     border-radius: 8px;
     }
 
+    button{
+        text-decoration: none;  
+        color: whitesmoke;
+        font-family: 'Ancient Modern Tales';
+        letter-spacing: 1.2px;
+        text-align: left;
+        position: relative;
+        font-size: 25px;
+        background-image: linear-gradient(to right, #393f93, #20194c);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 5%;
+        width: 50%;
+        margin: 0 auto;
+        margin-top: 20px;
+        border-radius: 8px;
+        }
   .alert{
       background-color:rgba(47, 61, 143, 0.6);
       border-color: whitesmoke;
@@ -156,12 +175,22 @@
 
   <h1>Welcome To The Game</h1>
 
-  <a href="{{url_for('new_game')}}">New Game</a>
-  <a href = "{{url_for('load_user')}}"> Load Game</a>
+  <button id="newGameBtn" onclick="newGame()">New Game</button>
+  <button id="loadGameBtn" onclick="loadGame()"> Load Game</button>
   <a href = "{{url_for('leaderboard')}}"> View Leaderboard</a>
   <a href="{{url_for('clear_session')}}" onclick="return confirm('Are you sure you want to exit the game?')">Exit Game</a>
 
 <script>
+    document.body.addEventListener("click", function(event) {
+        if (event.target.id === "newGameBtn") {
+          newGame();
+        }
+    });
+    document.body.addEventListener("click", function(event) {
+        if (event.target.id === "loadGameBtn") {
+          newGame();
+        }
+    });
   // Detailed JavaScript functions for game actions
   function newGame() {
     console.log("New game button clicked."); // Log when function is triggered
@@ -176,7 +205,7 @@
     }
   
     console.log("Proceeding with game reset."); // Log continuation after confirmation
-    fetch('/reset-game', {
+    fetch('/new-game', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -184,12 +213,12 @@
         body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
     })
     .then(response => {
-        console.log("Reset game response received."); // Log when response is received
-        return response.json();
-    })
-    .then(data => {
-        console.log('New game started:', data); // Log the data received
-        window.location.href = '/game.html'; // Redirect or initialize game state
+        if (response.ok) {
+            window.location.href = '/start-map'
+        }
+        else {
+            throw new Error('Error was not ok. Status: ' + response.status);
+        }
     })
     .catch((error) => {
         console.error('Error during game reset:', error); // Log any errors

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map and Player Info</title>
+<!--    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">-->
+    <style>
+        body, html {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Hide overflow if needed */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-end; /* Align at the bottom */
+    min-height: 100vh; /* Minimum height of viewport */
+}
+
+.map-container .Shop {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 95%;
+    height: 95%;
+    object-fit: cover; /* Cover the entire container */
+    border: 6px solid brown;
+    border-radius: 15px;
+}
+
+.slider-wrapper {
+    max-width: 500px;
+    width:95%;
+    overflow-x:hidden;
+}
+
+.image-item {
+    width:300px;
+    height:200px;
+    object-fit: cover;
+}
+
+.box {
+    width: 340px;
+    height: 300px;
+    top: 50px;
+    left: 50px;
+    background-color: white;
+    z-index:1;
+    object-fit:cover;
+    position:absolute;
+    padding: 90px;
+    align-items:center;
+    border-radius: 20px;
+    border: 5px solid #964B00;
+    background-color:rgba(230, 172, 101, .5);
+}
+
+.item-container {
+    width: 100%; /* Adjust as needed */
+    height: 263px; /* Adjust container height */
+    max-width: 1050px;
+    /*overflow: hidden; /* Hide main scrollbar */
+    background-color: transparent;
+    position:relative;
+}
+
+.item-container h2{
+    margin: 50px 130px auto;
+    position:absolute;
+    padding:-20px;
+    font-size: 220%;
+    font-family: brush script mt, cursive;
+    margin-bottom: 0px; /* Adjust as needed */
+    border-bottom: 1px solid black; /* Line style */
+    padding-bottom: 0px; /* Adjust spacing between text and line */
+}
+.item-container2 h2{
+    margin: 0px 130px auto;
+    position:absolute;*/
+    padding:-20px;
+    font-size: 220%;
+    font-family: brush script mt, cursive;
+    margin-bottom: 0px; /* Adjust as needed */
+    border-bottom: 1px solid black; /* Line style */
+    padding-bottom: 0px; /* Adjust spacing between text and line */
+}
+
+.slider {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap:18px;
+    scrollbar-width: none;
+    margin-top:130px;
+    margin-left:10px;
+    background-color:rgba(225, 225, 225, .7)
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem;
+    border: 2px solid black;
+    /*aspect-ratio: 16/9;
+    */overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    scroll-behaviour: smooth;/*
+    width:60px;
+    height:80px;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem*/
+}
+
+.slider::-webkit-scrollbar {
+    display: none;
+}
+
+.slider img {
+    flex: 1 0 100%;
+    scroll-snap-align:start;
+    width:50px;
+    height:60px;
+    object-fit:contain
+    /*overflow:hidden;
+    position:relative;
+    /*background-color:rgba(230, 172, 101)*/
+}
+
+.slider1 {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap:18px;
+    scrollbar-width: none;
+    margin-top:80px;
+    margin-left:10px;
+    background-color:rgba(225, 225, 225, .7)
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem;
+    border: 2px solid black;
+    /*aspect-ratio: 16/9;
+    */overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    scroll-behaviour: smooth;/*
+    width:60px;
+    height:80px;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0,0%,0%,0.25);
+    border-radius:0.5rem*/
+}
+
+.slider1::-webkit-scrollbar {
+    display: none;
+}
+
+.slider1 img {
+    flex: 1 0 100%;
+    scroll-snap-align:start;
+    width:50px;
+    height:60px;
+    object-fit:contain
+    /*overflow:hidden;
+    position:relative;
+    /*background-color:rgba(230, 172, 101)*/
+}
+
+
+/*item info*/
+.item-details
+{
+    background-color:rgba(230, 172, 101);
+    object-fit: cover;
+    width: 1000px; /* Adjust as needed */
+    height: 125px; /* Adjust container height */
+    position:relative;
+    bottom: 1.25rem;
+    left: 10%;
+    /*overflow: hidden;*/
+    border-radius: 20px;
+    border: 5px solid white;
+    z-index: 1;
+    /*width: 80%; /* Adjust width as needed */
+      max-width: 800px; /* Set maximum width */
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+      font-family: brush script mt, cursive;
+      font-size: 110%;
+     display: flex;
+    flex-direction: column;
+}
+.confirm-item {
+    margin-right: 0px; /* Adjust as needed */
+    border-right: 1px solid black; /* Line style */
+    width: 370px;
+    height: 120px;
+}
+.purchase-item {
+    top:0;
+    left: 50%;
+    position:absolute;
+    padding:0px;
+    margin:0px;
+    width: 370px;
+    max-height: 0px;
+    gap: 0px;
+}
+.name, .description, ul{
+    margin: 0;
+}
+.description {
+    font-weight: normal;
+}
+.op-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Items start from the left */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Ensure full width */
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.op-box li {
+    margin-right: 10px; /* Adjust spacing between items */
+    flex-basis: calc(50% - 20px);
+}
+
+.op-box li:nth-child(n+6) {
+    margin-right: 0; /* No margin for items in the second column */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="map-container">
+            <img src="{{ url_for('static', filename='Shop3.jpg') }}" alt="Shop" class="Shop">
+            <div class="box">
+                <section class="item-container2">
+                    <h2>Armory</h2>
+                    <div class="slider-wrapper">
+                        <div class="slider1">
+                            <img id="Guardian’s Breastplate" src="{{ url_for('static', filename='Guardians Breastplate.png') }}" alt="shop" class="image-item" data-imageid="10">
+                            <img id= "Warrior's Draught" src="{{ url_for('static', filename='Warrior\'s Draught.png') }}" alt="shop" class="image-item" data-imageid="11">
+                            <img id="Goblin Spellshield" src="{{ url_for('static', filename='Goblin Spellshield.png') }}" alt="shop" class="image-item" data-imageid="9">
+                            <img id= "Longsword Upgrade: Balanced Hilt" src="{{ url_for('static', filename='Longsword Upgrade Balanced Hilt.png') }}" alt="shop" class="image-item" data-imageid="12">
+                            <img id= "Longsword Upgrade: Sharpened Blade" src="{{ url_for('static', filename='Longsword Upgrade Sharpened Blade.png') }}" alt="shop" class="image-item" data-imageid="13">
+                        </div>
+                    </div>
+                </section>
+                <section class="item-container">
+                    <h2>Potions</h2>
+                    <div class="slider-wrapper">
+                        <div class="slider">
+                            <img id="Divine Blessing" src="{{ url_for('static', filename='Divine Blessing.png') }}" alt="shop" class="image-item" data-imageid="1">
+                            <img id="Elixir of Fortitude" src="{{ url_for('static', filename='Elixir of Fortitude.png') }}" alt="shop" class="image-item" data-imageid="2">
+                            <img id="Elixir of Vitality" src="{{ url_for('static', filename='Elixir of Vitality.png') }}" alt="shop" class="image-item" data-imageid="3">
+                            <img id="Goblin Blood Vial" src="{{ url_for('static', filename='Goblin Blood Vial.png') }}" alt="shop" class="image-item" data-imageid="4">
+                            <img id="Herbal Tonic" src="{{ url_for('static', filename='Herbal Tonic.png') }}" alt="shop" class="image-item" data-imageid="5">
+                            <img id="Iron Skin Potion" src="{{ url_for('static', filename='Iron Skin Potion.png') }}" alt="shop" class="image-item" data-imageid="6">
+                            <img id="Leather Armlet" src="{{ url_for('static', filename='Leather Armlet.png') }}" alt="shop" class="image-item" data-imageid="7">
+                            <img id="Potion of Healing" src="{{ url_for('static', filename='Potion of Healing.png') }}" alt="shop" class="image-item" data-imageid="8">
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="itemDetails" class="item-details">
+                <div class="confirm-item">
+                    <h2 id="funds">How many would you like to buy?</h2>
+                    <p id="currencyDisplay">Player Currency: {{ currency }}</p>
+                    <button class="btn1" onclick="Confirm()">
+                        Confirm
+                    </button>
+                    <button class="btn2" onclick="Leave()">
+                        Leave
+                    </button>
+                </div>
+                <div class="purchase-item">
+                    <h2 class="name" id="itemName">Name:</h2>
+                    <h4 class="description" id="itemDescription">Description:</h4>
+                    <ul class="op-box" id="shopItemDetails">
+                        <li>hp_buff:</li>
+                        <li>atk_buff:</li>
+                        <li>def_buff:</li>
+                        <li>duration:</li>
+                        <li>cooldown:</li>
+                        <li>price:</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script>
+        var playerCurrency = {{ currency }};
+    </script>
+    <script src="{{ url_for('static', filename='item.js') }}"></script>
+</body>
+</html>

@@ -32,9 +32,19 @@ def combat():
 @app.route('/returnToMap/', methods = ['GET', 'POST'])
 def returnToMap():
     if request.method == 'POST':
-        winCondition = request.form['winCondition']
+        winCondition = -1
+        inventory = []
+        req_data = request.get_json()
+        
+        #Ensuring the data is valid, in which case grab it
+        if (req_data and 'inventory' in req_data and 'condition'):
+            winCondition = req_data['condition']
+            inventory = req_data['inventory']
+        else:
+            raise ValueError('Invalid JSON data')
+        
         #If the user won the game
-        if (winCondition == "1"):
+        if (winCondition == 1):
             #Getting data to transfer currency and items dropped from enemy
             conn1 = sqlite3.connect('enemies.db')
             conn2 = sqlite3.connect('user_info.db')
@@ -82,8 +92,15 @@ def returnToMap():
             conn2.execute('UPDATE logins SET player_currency = ? WHERE username = ?', (currentPlayer['currency'], currentPlayer['username']))
             currentPlayer['wave'] += 1
             conn2.execute('UPDATE logins SET player_waveflag = ? WHERE username = ?', (currentPlayer['wave'], currentPlayer['username']))
+            currentPlayer['kills'] += len(enemies)
+            conn2.execute('UPDATE logins SET player_kills = ? WHERE username = ?', (currentPlayer['kills'], currentPlayer['username']))
             conn2.commit()
             
+            conn2.close()
+        elif (winCondition == 0):
+            currentPlayer['deaths'] += 1
+            conn2.execute('UPDATE logins SET player_kills = ? WHERE username = ?', (currentPlayer['deaths'], currentPlayer['username']))
+            conn2.commit()
             conn2.close()
             
     return render_template('dummy.html')
