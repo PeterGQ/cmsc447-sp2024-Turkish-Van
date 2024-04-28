@@ -199,7 +199,7 @@ current_player_data = {}
 def combat():
     conn1 = sqlite3.connect('items.db')
     conn2 = sqlite3.connect('enemies.db')
-    
+    loadPlayer(current_user)
     
     itemData = conn1.execute('SELECT * FROM game_items').fetchall()
     enemyData = conn2.execute('SELECT * FROM enemies').fetchall()
@@ -219,23 +219,40 @@ def combat():
 @app.route('/returnToMap/', methods = ['GET', 'POST'])
 def returnToMap():
     if request.method == 'POST':
-        winCondition = request.form['winCondition']
+        winCondition = -1
+        inventory = []
+        kills = 0
+        req_data = request.get_json()
+        print(req_data)
+        #Ensuring the data is valid, in which case grab it
+        if (req_data and 'inventory' in req_data and 'condition' in req_data and 'kills' in req_data):
+            winCondition = req_data['condition']
+            inventory = req_data['inventory']
+            kills = req_data['kills']
+        else:
+            raise ValueError('Invalid JSON data')
+        
+        conn1 = sqlite3.connect('enemies.db')
+        conn2 = sqlite3.connect('user_info.db')
+        conn3 = sqlite3.connect('items.db')
+        
+        for i in range(len(inventory)):
+            conn2.execute('UPDATE user_inventory SET quantity = ? WHERE user = ? AND item_name = ?', (inventory[i]['quantity'], current_player_data['username'], inventory[i]['name']))
+            conn2.commit()
+        
+        current_player_data['kills'] += kills
+        conn2.execute('UPDATE logins SET player_kills = ? WHERE username = ?', (current_player_data['kills'], current_player_data['username']))
+        conn2.commit()
+        
         #If the user won the game
-        if (winCondition == "1"):
-            #Getting data to transfer currency and items dropped from enemy
-            conn1 = sqlite3.connect('enemies.db')
-            conn2 = sqlite3.connect('user_info.db')
-            conn3 = sqlite3.connect('items.db')
-            
-            
+        if (winCondition == 1):
+            #Getting data to transfer currency and items dropped from enemy    
             enemyData = conn1.execute('SELECT * FROM enemies').fetchall()
             itemData =  conn3.execute('SELECT * FROM game_items').fetchall()
-            conn1.close()
-            conn3.close()
-            
             
             enemies = getEnemiesForWave(enemyData)
             items = getAllItems(itemData)
+            
             
             
             #Getting gold and rewards for player
@@ -272,8 +289,17 @@ def returnToMap():
             conn2.execute('UPDATE logins SET player_waveflag = ? WHERE username = ?', (current_player_data['wave'], current_player_data['username']))
             conn2.commit()
             
-            conn2.close()
-            
+        elif (winCondition == 0):
+            conn2 = sqlite3.connect('user_info.db')
+            current_player_data['deaths'] += 1
+            conn2.execute('UPDATE logins SET player_deaths = ? WHERE username = ?', (current_player_data['deaths'], current_player_data['username']))
+            conn2.commit()
+
+        #Closing all connections
+        conn1.close()
+        conn2.close()
+        conn3.close()
+        
     return redirect(url_for('main_menu'))
 
 def loadPlayer(user):

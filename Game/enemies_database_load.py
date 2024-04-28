@@ -18,7 +18,7 @@ cur.execute("""CREATE TABLE enemies (
 
 enemy_list = [
     ("Goblin", "1:2 2:2 3:1", "/static/assets/characters/goblin.png" , 30, 1, 1, 10),
-    ("Goblin Brute", "3:1", "/static/assets/characters/goblin_brute.png", 60, 1.5, .5, 5),
+    ("Goblin Brute", "3:1", "/static/assets/characters/goblin_brute.jpg", 60, 1.5, .5, 5),
     ("Goblin Mage", "2:1 3:1", "/static/assets/characters/goblin_mage.png", 30, 1, .5, 5),
 ]
 cur.executemany("INSERT INTO enemies VALUES (?, ?, ?, ?, ?, ?, ?)", enemy_list)
@@ -46,6 +46,7 @@ enemy_move_list = [
     ("Goblin Brute", "Goblin Cleave"),
     
     #Goblin Mage's moves
+    ("Goblin Mage", "Fireball"),
     ("Goblin Mage", "Restorative Strike"),
     ("Goblin Mage", "Guard Stance"),
     ("Goblin Mage", "Goblin Spellshield")

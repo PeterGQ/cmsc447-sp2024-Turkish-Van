@@ -26,20 +26,21 @@ item_list = [
     #Strength and Defense Items
     ("Longsword Upgrade: Balanced Hilt", "An upgrade that permanently increases the player’s attack by 15% when equipped", "SH_EQ", r"Icons\Longsword Upgrade Balanced Hilt.png", 0, None, 1.15, None, 100, 0, 15),
     ("Longsword Upgrade: Sharpened Blade", "An upgrade that increases the player’s attack by 30%", "SH_EQ", r"Icons\Longsword Upgrade Sharpened Blade.png", 0, None, 1.30, None, 100, 0, 45),
-    ("Leather Armlet", "A basic accessory that reduces incoming damage by 10% when equipped.", "SH_EQ", r"Icons\Leather Armlet.png", 0, None, None, .10, 100, 0, 10),
-    ("Guardian’s Breastplate", "An upgraded accessory that reduces incoming damage by 25%", "SH_EQ", r"Icons\Guardian’s Breastplate.png", 0, None, None, .25, 100, 0, 40),
-    ("Goblin Blood Vial", " A vial containing goblin blood that, when consumed the players strength increase by 15 percent and defense by 10 percent", "SH_WDA_UI", r"Icons\Goblin Blood Vial.png", 0, None, 1.15, 0.10, 4, 0, 30),
+    ("Leather Armlet", "A basic accessory that reduces incoming damage by 10% when equipped.", "SH_EQ", r"Icons\Leather Armlet.png", 0, None, None, 1.10, 100, 0, 10),
+    ("Guardian’s Breastplate", "An upgraded accessory that reduces incoming damage by 25%", "SH_EQ", r"Icons\Guardian’s Breastplate.png", 0, None, None, 1.25, 100, 0, 40),
+    ("Goblin Blood Vial", " A vial containing goblin blood that, when consumed the players strength increase by 15 percent and defense by 10 percent", "SH_WDA_UI", r"Icons\Goblin Blood Vial.png", 0, None, 1.15, 1.10, 4, 0, 30),
     ("Elixir of Fortitude", "A special elixir that provides a 15 percent boost to the player's defense for 5 turns.", "SH_WDA_UI", r"Icons\Elixir of Fortitude.png", 0, None, None, .15, 100, 0, 40),
-    ("Iron Skin Potion", "A potion that grants the player increased resistance to physical damage, reducing it by 20 percent for 4 turns.", "SH_WDA_UI", r"Icons\Iron Skin Potion.png", 0, None, None, .20, 4, 0, 35),
+    ("Iron Skin Potion", "A potion that grants the player increased resistance to physical damage, reducing it by 20 percent for 4 turns.", "SH_WDA_UI", r"Icons\Iron Skin Potion.png", 0, None, None, 1.20, 4, 0, 35),
     ("Warrior's Draught", "A simple draught that provides a reliable boost to the player's attack strength. When consumed, it grants a 10 percent increase in attack strength for 3 turns", "SH_WDA_UI", r"Icons\Warrior's Draught.png", 0, None, 1.10, None, 3, 0, 10),
 
     #Moves
-    ("Sword Slash", "A simple but effective attack that deals moderate damage to a single enemy.", "BM", r"Icons\Sword Slash.png", 1, None, None, None, 1, 0, 0),
-    ("Guard Stance", "A defensive stance that reduces incoming damage by 10 percent for 2 turns.", "BM", r"Icons\Guard Stance.png", 0, None, None, 0.10, 2, 2, 0),
-    ("Restorative Strike", "A special attack that deals light damage to an enemy and restores 10 HP. 4 Turn Cooldown", "BM", r"Icons\Restorative Strike.png", 1, 10, 1.05, None, 1, 4, 0),
-    ("Goblin Cleave", "A quick attack with moderate damage, similar to a standard goblin attack. It cannot be used for the next 3 turns", "FM_WDO", r"Icons\Goblin Cleave.png", 1.5, None, None, None, 1, 3, 0),
-    ("Goblin Warcry", "A move inspired by the goblin warriors that increases both strength and defense by 15 percent for 2 turns.  It cannot be used for the next 4 turns.", "FM_WDT", r"Icons\Goblin Warcry.png", 0, None, 1.15, .15, 2, 4, 0),
-    ("Goblin Spellshield", "A move inspired by wizard goblins that makes the player invincible for 2 turns. It cannot be used for the next 10 turns.", "FM_SH", r"Icons\Goblin Spellshield.png", 0, None, None, 0, 2, 10, 100),
+    ("Sword Slash", "A simple but effective attack that deals moderate damage to a single enemy.", "BM", r"Icons\Sword Slash.png", 1, None, None, None, 0, 0, 0),
+    ("Guard Stance", "A defensive stance that reduces incoming damage by 10 percent for 2 turns.", "BM", r"Icons\Guard Stance.png", 0, None, None, 2, 2, 2, 0),
+    ("Fireball", "A simple spell that launches a fireball that does moderate damage to an enemy.", "FM_WDO", r"Icons\Sword Slash.png", 1.4, None, None, None, 0, 0, 0),
+    ("Restorative Strike", "A special attack that deals light damage to an enemy and restores 10 HP. 4 Turn Cooldown", "BM", r"Icons\Restorative Strike.png", 1, 10, 1.05, None, 0, 4, 0),
+    ("Goblin Cleave", "A quick attack with moderate damage, similar to a standard goblin attack. It cannot be used for the next 3 turns", "FM_WDO", r"Icons\Goblin Cleave.png", 1.5, None, None, None, 0, 3, 0),
+    ("Goblin Warcry", "A move inspired by the goblin warriors that increases both strength and defense by 15 percent for 2 turns.  It cannot be used for the next 4 turns.", "FM_WDT", r"Icons\Goblin Warcry.png", 0, None, 1.15, 1.15, 2, 4, 0),
+    ("Goblin Spellshield", "A move inspired by wizard goblins that makes the player invincible for 2 turns. It cannot be used for the next 10 turns.", "FM_SH", r"Icons\Goblin Spellshield.png", 0, None, None, 100, 2, 10, 100),
 
 ]
 cur.executemany("INSERT INTO game_items VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", item_list)
