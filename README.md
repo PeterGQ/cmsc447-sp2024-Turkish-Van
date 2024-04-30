@@ -53,4 +53,26 @@ Frameworks and Libraries
     Flask: A lightweight web framework for Python, used to create the game's web server and handle HTTP requests.
     SQLAlchemy: A Python SQL toolkit and Object-Relational Mapping (ORM) library, used for interacting with the game's database.
    
+Credits and Acknowledgments
 
+Credits
+
+    Stephen Aldred: Lead Game Developer
+    Noelle Alston: Backend Developer and UI Designer
+    Peter Gatira: Game Developer and UI Designer
+    Bhojraj Pandey: Game Developer and Quality Assurance Analyst
+
+Acknowledgments
+
+We would also like to express our gratitude to the following external resources and open-source libraries used in the game's development:
+        
+    Flask (https://flask.palletsprojects.com/)
+    SQLAlchemy (https://www.sqlalchemy.org/)
+    
+Contact Information and Support:
+For any questions, comments, or support inquiries, please reach out to our development team via the following channels:
+    
+    Stephen Aldred: saldred1@umbc.edu
+    Noelle Alston: bn74019@umbc.edu
+    Peter Gatira: pgatira1@umbc.edu
+    Bhojraj Pandey: nn13856@umbc.edu
