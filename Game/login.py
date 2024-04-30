@@ -205,7 +205,7 @@ current_player_data = {}
 #----------------------------------------------------------------------------
 # MAP
 #----------------------------------------------------------------------------
-@app.route('/start-map')
+@app.route('/start-map', methods=['GET', 'POST'])
 def startMap():
     return redirect('/gameMap')
 

@@ -1,18 +1,20 @@
 const baseAtkDamage = 20;
 const maxPlayerHealth = 100;
 
-var items;
-var player = null;
-var enemies;
-var numKilled = 0;
-var lastChoice = "";
-var enemyMaxHps = [];
+var items; //Items database
+var player = null; //Player object with all their stats
+var enemies; //Array of enemies with all their statsin combat
+var numKilled = 0; //Number to keep track of how many enemies player has killed this combat
+var lastChoice = ""; //Last choice of the player
+var enemyMaxHps = []; //Max HP of the enemies
+var enemiesThatGoFirst = [] //List of enemies that go first (based on choice they make)
+var enemiesThatGoSecond = [] //List of enemies that go first (based on choice they make)
+var enemyChoices = []; //Move choices that enemies make on a turn corresponding to item database
+var enemyChoicesInTheirMoves = []; //Move choices that enemies make on a turn corresponding to their inventory
+var enemyDrops = null; //Map that holds rewards for the player
 var lastingEffects; //Map to keep track of move durations
 var cooldowns; //Map to keep track of move cooldowns per character 
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 /*---------------------------------------------------------------------------------------
     GETTING DATA FROM BACKEND AND STARTUP STUFF
@@ -21,7 +23,7 @@ function sleep(ms) {
 //Imports the items database to be referenced later
 function importItems(data) {
     items = JSON.parse(data);
-    console.log(items);
+    console.log("Items database: " + items);
 }
 
 
@@ -31,12 +33,13 @@ function importEnemies(data) {
     enemies = JSON.parse(data);
     console.log(enemies);
     displayEnemies();
-    
+    getEnemyDrops();
+
     //Storing max hp to be printed later
     for (var i = 0; i < enemies.length; i++) {
         enemyMaxHps.push(enemies[i].hp);
     }
-    console.log(enemyMaxHps);
+    console.log("Enemies: " + enemyMaxHps);
 }
 
 //importPlayer
@@ -50,7 +53,7 @@ function importPlayer(data) {
     inventory = new Map(Object.entries(player.get('inventory')));
     player.set('inventory', inventory);
 
-    console.log(player);
+    console.log("Player: " + player);
 
     //Printing username and hp above player sprite
     document.getElementById("playerName").innerHTML = player.get('username');
@@ -69,8 +72,8 @@ function setUpCooldownsAndDurations() {
         lastingEffects.set(enemies[i].name, new Map());
         cooldowns.set(enemies[i].name, new Map());
     }
-    console.log(lastingEffects);
-    console.log(cooldowns);
+    console.log("lastingEffects initialized");
+    console.log("cooldowns initialized");
 }
 
 /*---------------------------------------------------------------------------------------
@@ -170,10 +173,18 @@ async function startTurn(enemyIndex) {
     document.getElementById('enemies').innerHTML = "";
     document.getElementById("log").innerHTML = "";
     await toggleUI();
+    getEnemyChoices();
+    for (var i = 0; i < enemiesThatGoFirst.length; i++) {
+        await enemyTurn(enemiesThatGoFirst[i], enemyChoices[enemiesThatGoFirst[i]]);
+    }
     //Player goes first'
     await playerTurn(enemyIndex);
     //Enemies go in ascending order of list
-    await enemiesTurn();
+    
+    
+    for (var i = 0; i < enemiesThatGoSecond.length; i++) {
+        await enemyTurn(enemiesThatGoSecond[i], enemyChoices[enemiesThatGoSecond[i]]);
+    }
     await decrementDurationAndCooldown();
     var gameState = checkWinOrLoss();
         
@@ -188,7 +199,8 @@ async function startTurn(enemyIndex) {
     else {
         await toggleUI();
     }
-    
+    enemiesThatGoFirst = [];
+    enemiesThatGoSecond = [];
 }
 
 //playerTurn()
@@ -203,7 +215,6 @@ async function playerTurn(enemyIndex) {
     
     updateLog(player.get('username'), lastChoice);
     if (isAtk) {
-        console.log(enemyIndex);
         damageAmount = calculateAttack(player.get('atk'), items[moveIndex].atk, enemies[enemyIndex].def);
         enemies[enemyIndex].hp -= damageAmount;
         updateHealth(enemyIndex);
@@ -215,7 +226,7 @@ async function playerTurn(enemyIndex) {
     }
     addDurationAndCooldown(moveIndex);
     await sleep(1000);
-    console.log(player);
+    console.log("After player turn: " + player);
 }
 
 //enemiesTurn()
@@ -247,9 +258,51 @@ async function enemiesTurn() {
         }
     }
 }
+
+async function enemyTurn(index, moveIndex) {
+    if (enemies[index].hp > 0) {
+        var isAtk = isAttack(moveIndex);
+        updateLog(enemies[index].name, items[moveIndex].name);
+        //Attack based moves (damage = (atk_stat * atk_buf_of_move) / target_def
+        if (isAtk) {
+            damageAmount = calculateAttack(enemies[index].atk, items[moveIndex].atk, player.get('def'));
+            player.set('hp', player.get('hp') - damageAmount);
+            updateHealth(-1);
+        }
+        //Applying buffs to self
+        addDurationAndCooldownEnemy(index, moveIndex, enemyChoicesInTheirMoves[index]);
+        await sleep(1000);
+    }
+}
+
+function getEnemyChoices() {
+    for (var i = 0; i < enemies.length; i++) {
+        //Skips turn if dead
+        if (enemies[i].hp > 0) {
+            //Getting random move choice for enemy
+            choice = Math.floor(Math.random() * enemies[i].moves.length);
+            enemyChoicesInTheirMoves[i] = choice;
+            moveIndex = getItemIndex(enemies[i].moves[choice]);
+            console.log(enemies[i].moves[choice]);
+            console.log(moveIndex);
+            isAtk = isAttack(moveIndex);
+            if (isAtk) {
+                enemiesThatGoSecond.push(i);
+            }
+            else {
+                enemiesThatGoFirst.push(i);
+            }
+            enemyChoices[i] = moveIndex;
+        }
+    }
+    console.log(enemiesThatGoFirst);
+    console.log(enemiesThatGoSecond);
+}
+
 //calculateAttack()
 //Returns damage value based on parameters
 function calculateAttack(attackerAtk, moveAtk, targetDef) {
+    console.log("(" + attackerAtk + " * " + moveAtk + ")/" + targetDef);
     return parseInt(((attackerAtk * moveAtk)/(targetDef)) * baseAtkDamage);
 }
 
@@ -319,6 +372,12 @@ function updateHealth(index) {
 /*-------------------------------------------------------------------------------------------------
     HELPER FUNCTIONS
 --------------------------------------------------------------------------------------------------*/
+//sleep
+//Forces the game to stop for an interval (in miliseconds)
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 //getItemIndex
 //Gets the index of the move/item from the items array to get stats of item/move
@@ -364,10 +423,14 @@ function addDurationAndCooldown(moveIndex) {
         console.log("HP:" + player.get('hp'));
     }
     if (items[moveIndex].atk_buff != null && items[moveIndex].atk_buff > 0) {
-            player.set('atk', player.get('atk') * items[moveIndex].atk_buff);
+        player.set('atk', player.get('atk') * items[moveIndex].atk_buff);
+        document.getElementById("log").innerHTML += '<li>' + player.get('username') + 
+                    "'s attack went up! </li>";
     }
     if (items[moveIndex].def_buff != null && items[moveIndex].def_buff > 0) {
         player.set('def', player.get('def') * items[moveIndex].def_buff);
+        document.getElementById("log").innerHTML += '<li>' + player.get('username') + 
+                        "'s defense went up! </li>";
 
     }
     if (items[moveIndex].duration != null && items[moveIndex].duration > 0 && items[moveIndex].duration != 100) {
@@ -381,7 +444,7 @@ function addDurationAndCooldown(moveIndex) {
 function addDurationAndCooldownEnemy(characterIndex, moveIndex, enemyOption) {
     //Applying item effects to the specified enemy
     if (items[moveIndex].hp_buff != null && items[moveIndex].hp_buff > 0) {
-        if (enemies[characterIndex].hp + items[moveIndex].hp_buff < maxPlayerHealth) {
+        if (enemies[characterIndex].hp + items[moveIndex].hp_buff < enemyMaxHps[characterIndex]) {
             enemies[characterIndex].hp = enemies[characterIndex].hp + items[moveIndex].hp_buff;
         }
         else {
@@ -391,9 +454,14 @@ function addDurationAndCooldownEnemy(characterIndex, moveIndex, enemyOption) {
     }
     if (items[moveIndex].atk_buff != null && items[moveIndex].atk_buff > 0) {
         enemies[characterIndex].atk = enemies[characterIndex].atk * items[moveIndex].atk_buff;
+        document.getElementById("log").innerHTML += '<li>' + enemies[characterIndex].name + 
+                        "'s attack went up! </li>";
     }
     if (items[moveIndex].def_buff != null && items[moveIndex].def_buff > 0) {
         enemies[characterIndex].def = enemies[characterIndex].def * items[moveIndex].def_buff;
+        document.getElementById("log").innerHTML += '<li>' + enemies[characterIndex].name + 
+                        "'s defense went up! </li>";
+        
     }
     if (items[moveIndex].duration != null && items[moveIndex].duration > 0 && items[moveIndex].duration != 100) {
         lastingEffects.get(enemies[characterIndex].name).set(items[moveIndex].name, items[moveIndex].duration);
@@ -405,11 +473,14 @@ function addDurationAndCooldownEnemy(characterIndex, moveIndex, enemyOption) {
         firstPartWithoutMove = enemies[characterIndex].moves.slice(0, enemyOption);
         secondPartWithoutMove = enemies[characterIndex].moves.slice(enemyOption + 1, enemies[characterIndex].moves.length);
         enemies[characterIndex].moves = firstPartWithoutMove.concat(secondPartWithoutMove);
+        console.log(enemyOption);
+        console.log(firstPartWithoutMove);
+        console.log(secondPartWithoutMove);
         console.log(enemies);
     }
 }
 
-function decrementDurationAndCooldown() {
+async function decrementDurationAndCooldown() {
     //Iterating through players durations and cooldowns, decrementing and removing them
     cooldowns.get(player.get('username')).forEach((value, key) => {
         
@@ -463,6 +534,8 @@ function decrementDurationAndCooldown() {
                 }
                 if (items[itemIndex].def_buff != null && items[itemIndex].def_buff > 0) {
                     enemies[i].def = enemies[i].def / items[itemIndex].def_buff;
+                    document.getElementById("log").innerHTML += '<li>' + enemies[i].name + 
+                        ' defense went up! </li>';
                 }
 
                 lastingEffects.get(enemies[i].name).delete(key);
@@ -475,6 +548,7 @@ function decrementDurationAndCooldown() {
     }
     console.log(lastingEffects);
     console.log(cooldowns);
+    await sleep(1000);
 }
 
 function updateLog(name, move) {
@@ -493,8 +567,24 @@ function toggleUI() {
     }
 }
 
+function getEnemyDrops() {
+    enemyDrops = new Map();
+    for (i = 0; i < enemies.length; i++) {
+        for (key in enemies[i].drops) {
+            if (enemyDrops.has(key)) {
+                enemyDrops.set(key, enemyDrops.get(key) + enemies[i].drops[key]);
+            }
+            else {
+                enemyDrops.set(key, enemies[i].drops[key]);
+            }
+        }
+    }
+    console.log(enemyDrops);
+}
+
 function generateEndScreen(playerWon) { 
     var game = document.getElementById('game');
+    
     game.innerHTML += '<div class="container px-5">';
     if (!playerWon) {
         game.innerHTML += '<div class="row justify-content-center"> <div class = "col-4 align-self-center game-condition">You Have Fallen </div></div>';
@@ -508,9 +598,11 @@ function generateEndScreen(playerWon) {
         game.innerHTML += '<div class="row justify-content-center"><div class="col-4 endScreen text-center align-self-center">' +
                           '<button class ="returnButton" onclick="leave(1)">Return to the Map</button></div></div></div>';
         var drops = document.getElementById('drops');
-        for (var i = 0; i < 3; i++) {
-            drops.innerHTML += '<li> Item ' + i +  '</li>';
-        }
+        enemyDrops.forEach((value, key) =>{
+            if (!(key in player.get('moves'))) {
+                drops.innerHTML += '<li> ' + key + ' x' + value +' </li>';
+            }
+        });
     }
 } 
 

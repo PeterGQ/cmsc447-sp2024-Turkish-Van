@@ -189,7 +189,7 @@
     });
     document.body.addEventListener("click", function(event) {
         if (event.target.id === "loadGameBtn") {
-          newGame();
+          loadGame();
         }
     });
   // Detailed JavaScript functions for game actions
@@ -229,17 +229,23 @@
   
   function loadGame() {
     console.log("Load game button clicked."); // Log when function is triggered
-    fetch('/load-game') // Make sure this URL matches your server's endpoint
-    .then(response => {
-        console.log("Response received."); // Log when response is received
-        return response.json();
+    fetch('/load-game', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
     })
-    .then(data => {
-        console.log('Game loaded:', data); // Log the data received
-        // Here you can add code to update the UI based on the loaded game data
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/start-map'
+        }
+        else {
+            throw new Error('Error was not ok. Status: ' + response.status);
+        }
     })
     .catch((error) => {
-        console.error('Error:', error); // Log any errors
+        console.error('Error during game reset:', error); // Log any errors
     });
 }
 

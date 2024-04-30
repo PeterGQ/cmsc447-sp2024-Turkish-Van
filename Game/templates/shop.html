@@ -181,13 +181,13 @@
     border: 5px solid white;
     z-index: 1;
     /*width: 80%; /* Adjust width as needed */
-      max-width: 800px; /* Set maximum width */
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
-      font-family: brush script mt, cursive;
-      font-size: 110%;
-     display: flex;
+    max-width: 800px; /* Set maximum width */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+    font-family: brush script mt, cursive;
+    font-size: 110%;
+    display: flex;
     flex-direction: column;
 }
 .confirm-item {
@@ -244,7 +244,7 @@
                     <div class="slider-wrapper">
                         <div class="slider1">
                             <img id="Guardian’s Breastplate" src="{{ url_for('static', filename='Guardians Breastplate.png') }}" alt="shop" class="image-item" data-imageid="10">
-                            <img id= "Warrior's Draught" src="{{ url_for('static', filename='Warrior\'s Draught.png') }}" alt="shop" class="image-item" data-imageid="11">
+                            <img id= "Warrior's Draught" src="{{ url_for('static', filename="Warrior's Draught.png") }}" alt="shop" class="image-item" data-imageid="11">
                             <img id="Goblin Spellshield" src="{{ url_for('static', filename='Goblin Spellshield.png') }}" alt="shop" class="image-item" data-imageid="9">
                             <img id= "Longsword Upgrade: Balanced Hilt" src="{{ url_for('static', filename='Longsword Upgrade Balanced Hilt.png') }}" alt="shop" class="image-item" data-imageid="12">
                             <img id= "Longsword Upgrade: Sharpened Blade" src="{{ url_for('static', filename='Longsword Upgrade Sharpened Blade.png') }}" alt="shop" class="image-item" data-imageid="13">
@@ -269,8 +269,8 @@
             </div>
             <div id="itemDetails" class="item-details">
                 <div class="confirm-item">
-                    <h2 id="funds">How many would you like to buy?</h2>
-                    <p id="currencyDisplay">Player Currency: {{ currency }}</p>
+                    <h3 id="funds">How many would you like to buy?</h3>
+                    <p id="currencyDisplay">You have {{ currency }}gp</p>
                     <button class="btn1" onclick="Confirm()">
                         Confirm
                     </button>
