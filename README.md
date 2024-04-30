@@ -11,4 +11,24 @@ In-game shop for items and abilities,
 Leaderboard to compete with other players,
 Save and load functionality
 
+Code Structure:
+/Game: This folder holds the game's main files and subfolders.
+    ___.py: The main entry point of the game.
+    items.db: The database file tables relating to the game items and their stats.
+    user_info.db: The database file tables relating to the user/play information. Used to save player information as they go in and out of the game.
+    enemies.db: The database file tables relating to the enemies including their assets, moves, and drops
+        Each of these databases has its own py file to load them.
+/Game/static: This folder holds all the game's static assets and files.
+    images/: Contains subfolders for character sprites, backgrounds, UI elements, and other visual assets.
+    css/: Contains CSS files for styling the game's HTML elements.
+    fonts/: Contains various font files used in the game.
+    js/: Contains JavaScript files used for client-side scripting and game logic.
+/Game/templates: This folder holds all the HTML files for the game, which define the game's user interface and web pages.
+    combat.html: Contains the HTML template for the combat screen, including player and enemy health bars, ability buttons, and combat-related UI elements.
+    leaderboard.html: Contains the HTML template for the leaderboard screen, displaying top-ranking players and their scores.
+    login.html: Contains the HTML template for the login screen, allowing players to log in or register for the game.
+    mainMenu.html: Contains the HTML template for the main menu screen, providing options to start a new game, continue a saved game, or access other game features.
+    map.html: Contains the HTML template for the game's map, displaying various locations, points of interest, and player progress.
+    register.html: Contains the HTML template for the registration screen, allowing new players to create an account and join the game.
+    shop.html: Contains the HTML template for the in-game shop, allowing players to purchase items, abilities, or upgrades using in-game currency.
 
