@@ -23,7 +23,8 @@ var cooldowns; //Map to keep track of move cooldowns per character
 //Imports the items database to be referenced later
 function importItems(data) {
     items = JSON.parse(data);
-    console.log("Items database: " + items);
+    console.log("Items database: ");
+    console.log(items);
 }
 
 
@@ -39,7 +40,8 @@ function importEnemies(data) {
     for (var i = 0; i < enemies.length; i++) {
         enemyMaxHps.push(enemies[i].hp);
     }
-    console.log("Enemies: " + enemyMaxHps);
+    console.log("Enemies: ");
+    console.log(enemyMaxHps);
 }
 
 //importPlayer
@@ -52,14 +54,38 @@ function importPlayer(data) {
     //Converting inventory to nested map
     inventory = new Map(Object.entries(player.get('inventory')));
     player.set('inventory', inventory);
-
-    console.log("Player: " + player);
+    checkForUpgrades();
+    console.log("Player: ");
+    console.log(player);
 
     //Printing username and hp above player sprite
     document.getElementById("playerName").innerHTML = player.get('username');
     document.getElementById("playerHP").innerHTML = player.get('hp')+ "/100";
 }
 
+//checkForUpgrades
+//If player has any upgrades, will add it to their stat block
+function checkForUpgrades() {
+    player.get('inventory').forEach((value,key) => {
+        var itemIndex = getItemIndex(key);
+        //If the identifier is an equippable item, increases stats
+        if (items[itemIndex].identifier.includes("EQ")) {
+            for (var i = 0; i < value; i++) {
+                if (items[itemIndex].atk_buff != null && items[itemIndex].atk_buff > 0) {
+                    player.set('atk', player.get('atk') * items[itemIndex].atk_buff);
+                }
+                if (items[itemIndex].def_buff != null && items[itemIndex].def_buff > 0) {
+                    player.set('def', player.get('def') * items[itemIndex].def_buff);
+                }
+            }
+            player.get('inventory').delete(key);
+        }
+    });
+}
+
+
+//setupCooldownsAndDurations
+//Sets up maps for later use to track cooldowns and durations
 function setUpCooldownsAndDurations() {
     lastingEffects = new Map();
     lastingEffects.set(player.get('username'), new Map());
@@ -226,7 +252,8 @@ async function playerTurn(enemyIndex) {
     }
     addDurationAndCooldown(moveIndex);
     await sleep(1000);
-    console.log("After player turn: " + player);
+    console.log("After player turn: ");
+    console.log(player);
 }
 
 //enemiesTurn()
@@ -534,8 +561,6 @@ async function decrementDurationAndCooldown() {
                 }
                 if (items[itemIndex].def_buff != null && items[itemIndex].def_buff > 0) {
                     enemies[i].def = enemies[i].def / items[itemIndex].def_buff;
-                    document.getElementById("log").innerHTML += '<li>' + enemies[i].name + 
-                        ' defense went up! </li>';
                 }
 
                 lastingEffects.get(enemies[i].name).delete(key);
@@ -599,8 +624,14 @@ function generateEndScreen(playerWon) {
                           '<button class ="returnButton" onclick="leave(1)">Return to the Map</button></div></div></div>';
         var drops = document.getElementById('drops');
         enemyDrops.forEach((value, key) =>{
-            if (!(key in player.get('moves'))) {
-                drops.innerHTML += '<li> ' + key + ' x' + value +' </li>';
+            if (!(player.get('moves').includes(key))) {
+                itemIndex = getItemIndex(key);
+                if (items[itemIndex].identifier.includes("FM") || items[itemIndex].identifier.includes("BM")) {
+                    drops.innerHTML += '<li> learned the move ' + key + '</li>';
+                }
+                else {
+                    drops.innerHTML += '<li> ' + key + ' x' + value +' </li>';
+                }
             }
         });
     }

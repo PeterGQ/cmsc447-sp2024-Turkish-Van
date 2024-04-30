@@ -182,16 +182,6 @@
 
 <script>
     var newPlayerFlag = {{newPlayerFlag}}
-    document.body.addEventListener("click", function(event) {
-        if (event.target.id === "newGameBtn") {
-          newGame();
-        }
-    });
-    document.body.addEventListener("click", function(event) {
-        if (event.target.id === "loadGameBtn") {
-          loadGame();
-        }
-    });
   // Detailed JavaScript functions for game actions
   function newGame() {
     console.log("New game button clicked."); // Log when function is triggered
