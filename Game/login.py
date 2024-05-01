@@ -1,3 +1,4 @@
+import random
 import sqlite3
 from sqlite3 import Error
 from flask import Flask, render_template, request, flash, redirect, url_for, session, json, jsonify
@@ -496,16 +497,24 @@ def loadPlayer(user):
     conn.close()
 
 def getEnemiesForWave(enemyData):
+    print(enemyData)
     enemiesArray = []
-    for entry in enemyData:
-        waveString = str(current_player_data['wave']) + ":"
-        if (waveString in entry[1]):
-            waveNumberIndex = entry[1].find(waveString)
-            numEnemyType = int(entry[1][(waveNumberIndex + 2):(waveNumberIndex+3)])
-            enemyMoves = getEnemyMoves(entry[0])
-            enemyDrops = getEnemyDrops(entry[0])
-            for i in range(numEnemyType): 
-                enemiesArray.append({'name': entry[0] + " " + str(i + 1), 'icon': entry[2], 'hp': entry[3], 'atk': entry[4], 'def': entry[5], 'goldDrop':entry[6], 'moves': enemyMoves, 'drops': enemyDrops})
+    if (current_player_data['wave'] <= 3):
+        for entry in enemyData:
+            waveString = str(current_player_data['wave']) + ":"
+            if (waveString in entry[1]):
+                waveNumberIndex = entry[1].find(waveString)
+                numEnemyType = int(entry[1][(waveNumberIndex + 2):(waveNumberIndex+3)])
+                enemyMoves = getEnemyMoves(entry[0])
+                enemyDrops = getEnemyDrops(entry[0])
+                for i in range(numEnemyType): 
+                    enemiesArray.append({'name': entry[0] + " " + str(i + 1), 'icon': entry[2], 'hp': entry[3], 'atk': entry[4], 'def': entry[5], 'goldDrop':entry[6], 'moves': enemyMoves, 'drops': enemyDrops})
+    else:
+        for i in range(3):
+            enemyBeingAdded = random.randint(0, len(enemyData)-1)
+            enemyMoves = getEnemyMoves(enemyData[enemyBeingAdded][0])
+            enemyDrops = getEnemyDrops(enemyData[enemyBeingAdded][0])
+            enemiesArray.append({'name': enemyData[enemyBeingAdded][0] + " " +str(i+1), 'icon': enemyData[enemyBeingAdded][2], 'hp': enemyData[enemyBeingAdded][3], 'atk': enemyData[enemyBeingAdded][4], 'def': enemyData[enemyBeingAdded][5], 'goldDrop':enemyData[enemyBeingAdded][6], 'moves': enemyMoves, 'drops': enemyDrops})
     return enemiesArray
 
 

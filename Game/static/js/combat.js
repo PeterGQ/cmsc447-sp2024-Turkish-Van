@@ -331,7 +331,7 @@ function getEnemyChoices() {
 function calculateAttack(attackerAtk, moveAtk, targetDef , isEnemy) {
     console.log("(" + attackerAtk + " * " + moveAtk + ")/" + targetDef);
     if (isEnemy) {
-        return parseInt(((attackerAtk * moveAtk)/(targetDef)) * (baseAtkDamage/2));
+        return parseInt(((attackerAtk * moveAtk)/(targetDef)) * (baseAtkDamage/1.5));
     }
     else {
         return parseInt(((attackerAtk * moveAtk)/(targetDef)) * (baseAtkDamage));
@@ -614,7 +614,8 @@ function getEnemyDrops() {
 
 function generateEndScreen(playerWon) { 
     var game = document.getElementById('game');
-    
+    var goldCount = 0;
+
     game.innerHTML += '<div class="container px-5">';
     if (!playerWon) {
         game.innerHTML += '<div class="row justify-content-center"> <div class = "col-4 align-self-center game-condition">You Have Fallen </div></div>';
@@ -628,6 +629,10 @@ function generateEndScreen(playerWon) {
         game.innerHTML += '<div class="row justify-content-center"><div class="col-4 endScreen text-center align-self-center">' +
                           '<button class ="returnButton" onclick="leave(1)">Return to the Map</button></div></div></div>';
         var drops = document.getElementById('drops');
+        for (var i = 0; i < enemies.length; i++) {
+            goldCount += enemies[i]['goldDrop'];
+        }
+        drops.innerHTML += '<li> ' + "You found " + goldCount + 'gp '  +' </li>';
         enemyDrops.forEach((value, key) =>{
             if (!(player.get('moves').includes(key))) {
                 itemIndex = getItemIndex(key);
