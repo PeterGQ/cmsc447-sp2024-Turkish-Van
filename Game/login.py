@@ -326,23 +326,10 @@ def updateData():
             cursor = conn.cursor()
 
             if image_id == 'Goblin Spellshield':
-                query = 'SELECT * FROM user_moves WHERE user = ?'
-                cursor.execute(query, (username,))
-                result = cursor.fetchone()  # Fetch one row (if exists)
-                if result is None:
-                    cursor.execute('INSERT INTO user_moves VALUES (?, ?)',
-                                   (username, image_id))
-                    conn.commit()
-                    print("not in db")
-                else:
-                    item = conn.execute('SELECT * FROM user_moves WHERE user = ?',
-                                        (username,)).fetchall()
-                    print("newAmount")
-                    newAmount = item[0][2] + 1
-                    cursor.execute('UPDATE user_moves SET quantity = ? WHERE user = ? AND item_name = ?',
-                                   (newAmount, username, image_id))
-                    conn.commit()
-                    print("in db")
+                cursor.execute('INSERT INTO user_moves VALUES (?, ?)',
+                               (username, image_id))
+                conn.commit()
+                print("not in db")
             else:
                 query = 'SELECT * FROM user_inventory WHERE user = ? AND item_name = ?'
                 cursor.execute(query, (username, image_id))
