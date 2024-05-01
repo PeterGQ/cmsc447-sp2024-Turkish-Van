@@ -18,7 +18,7 @@ cur.execute("""CREATE TABLE enemies (
 
 enemy_list = [
     ("Goblin", "1:2 2:2 3:1", "/static/assets/characters/goblin.png" , 30, 1, 1, 10),
-    ("Goblin Brute", "3:1", "/static/assets/characters/goblin_brute.jpg", 60, 1.5, .5, 5),
+    ("Goblin Brute", "3:1", "/static/assets/characters/goblin_brute.png", 60, 1.5, .5, 5),
     ("Goblin Mage", "2:1 3:1", "/static/assets/characters/goblin_mage.png", 30, 1, .5, 5),
 ]
 cur.executemany("INSERT INTO enemies VALUES (?, ?, ?, ?, ?, ?, ?)", enemy_list)
@@ -69,7 +69,6 @@ cur.execute("""CREATE TABLE enemy_drops(
 enemy_drop_list = [
     #Goblin's item/move drops
     ("Goblin", "Goblin Blood Vial", 1),
-    ("Goblin", "Goblin Warcry", 1),
     #Goblin Brute's item/move drops
     ("Goblin Brute", "Goblin Blood Vial", 1),
     ("Goblin Brute", "Goblin Warcry", 1),
@@ -77,7 +76,6 @@ enemy_drop_list = [
     
     #Goblin Mage's item/move drops
     ("Goblin Mage", "Herbal Tonic", 1),
-    ("Goblin Mage", "Goblin Spellshield", 1)
 ]
 
 cur.executemany("INSERT INTO enemy_drops VALUES (?, ?, ?)", enemy_drop_list)

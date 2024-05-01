@@ -16,9 +16,9 @@
 
 
 body{
-    background-image:url('/static/combatBackground.png');
-    background-repeat: no-repeat;
-    background: #070F2B;
+    background-image: url("/static/combatBackground.png");
+    background-size: cover;
+    z-index: 0;
     color: #9290C3;
     font-family: 'Breathe Fire';
     font-size: 20px;

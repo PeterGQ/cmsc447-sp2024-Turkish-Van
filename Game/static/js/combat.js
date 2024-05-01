@@ -1,4 +1,4 @@
-const baseAtkDamage = 20;
+const baseAtkDamage = 10;
 const maxPlayerHealth = 100;
 
 var items; //Items database
@@ -241,7 +241,7 @@ async function playerTurn(enemyIndex) {
     
     updateLog(player.get('username'), lastChoice);
     if (isAtk) {
-        damageAmount = calculateAttack(player.get('atk'), items[moveIndex].atk, enemies[enemyIndex].def);
+        damageAmount = calculateAttack(player.get('atk'), items[moveIndex].atk, enemies[enemyIndex].def, false);
         enemies[enemyIndex].hp -= damageAmount;
         updateHealth(enemyIndex);
     }
@@ -292,7 +292,7 @@ async function enemyTurn(index, moveIndex) {
         updateLog(enemies[index].name, items[moveIndex].name);
         //Attack based moves (damage = (atk_stat * atk_buf_of_move) / target_def
         if (isAtk) {
-            damageAmount = calculateAttack(enemies[index].atk, items[moveIndex].atk, player.get('def'));
+            damageAmount = calculateAttack(enemies[index].atk, items[moveIndex].atk, player.get('def'), true);
             player.set('hp', player.get('hp') - damageAmount);
             updateHealth(-1);
         }
@@ -328,9 +328,14 @@ function getEnemyChoices() {
 
 //calculateAttack()
 //Returns damage value based on parameters
-function calculateAttack(attackerAtk, moveAtk, targetDef) {
+function calculateAttack(attackerAtk, moveAtk, targetDef , isEnemy) {
     console.log("(" + attackerAtk + " * " + moveAtk + ")/" + targetDef);
-    return parseInt(((attackerAtk * moveAtk)/(targetDef)) * baseAtkDamage);
+    if (isEnemy) {
+        return parseInt(((attackerAtk * moveAtk)/(targetDef)) * (baseAtkDamage/2));
+    }
+    else {
+        return parseInt(((attackerAtk * moveAtk)/(targetDef)) * (baseAtkDamage));
+    }
 }
 
 //checkWinOrLoss()
