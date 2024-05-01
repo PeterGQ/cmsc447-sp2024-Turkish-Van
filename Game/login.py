@@ -111,6 +111,9 @@ def login():
 #----------------------------------------------------------------------------------
 # MAIN MENU
 #----------------------------------------------------------------------------------
+@app.route('/render-menu', methods=['POST'])
+def renderMenu():
+    return redirect(url_for('main_menu'))
 @app.route('/main_menu')
 def main_menu():
     loadPlayer(current_user)
@@ -212,6 +215,7 @@ def startMap():
 @app.route('/gameMap')
 def mapRender():
     loadPlayer(current_user)
+    print(current_user)
     itemNames = []
     itemQuantities = []
     for itemName, itemQuantity in current_player_data['inventory'].items():
@@ -237,6 +241,7 @@ def display():
     conn = sqlite3.connect('user_info.db')
     cursor = conn.cursor()
     username = current_user
+    print(username)
     # Assuming 'image_id' is the name of the item
     cursor.execute(
         'SELECT player_currency FROM logins WHERE username = ?',
@@ -300,31 +305,62 @@ def updateData():
             # Assuming 'image_id' is the name of the item
             cursor.execute(
                 'UPDATE logins SET player_currency = ? WHERE username = ?',
-                (currency_value,username,))
+                (currency_value,username))
+            conn.commit()
             conn.close()
-
+            conn = sqlite3.connect('user_info.db')
+            cursor = conn.cursor()
+            username = current_user
+            # Assuming 'image_id' is the name of the item
+            cursor.execute(
+                'SELECT player_currency FROM logins WHERE username = ?',
+                (username,))
+            result = cursor.fetchone()
+            print(currency_value)
+            print(current_user)
+            print(result)
+            conn.close()
             image_id = req_data['item']
             print("image_id")
             conn = sqlite3.connect('user_info.db')
             cursor = conn.cursor()
-            query = 'SELECT * FROM user_inventory WHERE user = ? AND item_name = ?'
-            cursor.execute(query, (username,image_id))
-            result = cursor.fetchone()  # Fetch one row (if exists)
 
-            if result is None:
-                cursor.execute('INSERT INTO user_inventory VALUES (?, ?, ?)',
-                               (username, image_id, 1))
-                conn.commit()
-                print("not in db")
+            if image_id == 'Goblin Spellshield':
+                query = 'SELECT * FROM user_moves WHERE user = ?'
+                cursor.execute(query, (username,))
+                result = cursor.fetchone()  # Fetch one row (if exists)
+                if result is None:
+                    cursor.execute('INSERT INTO user_moves VALUES (?, ?)',
+                                   (username, image_id))
+                    conn.commit()
+                    print("not in db")
+                else:
+                    item = conn.execute('SELECT * FROM user_moves WHERE user = ?',
+                                        (username,)).fetchall()
+                    print("newAmount")
+                    newAmount = item[0][2] + 1
+                    cursor.execute('UPDATE user_moves SET quantity = ? WHERE user = ? AND item_name = ?',
+                                   (newAmount, username, image_id))
+                    conn.commit()
+                    print("in db")
             else:
-                item = conn.execute('SELECT * FROM user_inventory WHERE user = ? AND item_name = ?',
-                                    (username, image_id)).fetchall()
-                print("newAmount")
-                newAmount = item[0][2] + 1
-                cursor.execute('UPDATE user_inventory SET quantity = ? WHERE user = ? AND item_name = ?',
-                             (newAmount, username, image_id))
-                conn.commit()
-                print("in db")
+                query = 'SELECT * FROM user_inventory WHERE user = ? AND item_name = ?'
+                cursor.execute(query, (username, image_id))
+                result = cursor.fetchone()  # Fetch one row (if exists)
+                if result is None:
+                    cursor.execute('INSERT INTO user_inventory VALUES (?, ?, ?)',
+                                   (username, image_id, 1))
+                    conn.commit()
+                    print("not in db")
+                else:
+                    item = conn.execute('SELECT * FROM user_inventory WHERE user = ? AND item_name = ?',
+                                        (username, image_id)).fetchall()
+                    print("newAmount")
+                    newAmount = item[0][2] + 1
+                    cursor.execute('UPDATE user_inventory SET quantity = ? WHERE user = ? AND item_name = ?',
+                                 (newAmount, username, image_id))
+                    conn.commit()
+                    print("in db")
             conn.close()
             return jsonify({'success': True, 'currency': currency_value}), 200
         else:
