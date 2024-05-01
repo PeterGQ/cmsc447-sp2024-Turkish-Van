@@ -16,7 +16,7 @@
                 <img src="{{ url_for('static', filename='Battle.jpg') }}" alt="Battle" class="Battle">
                 <button id="btn2" class="btn2">Shop</button>
                 <img src="{{ url_for('static', filename='SafeHaven.jpg') }}" alt="SafeHaven" class="SafeHaven">
-                <button id="btn3" class="btn3">Main_Menu</button>
+                <button id="btn3" class="btn3">Leave</button>
             </div>
         </div>
         <div class="player-info">
@@ -85,7 +85,7 @@
                 console.error('Network error:', error);
             });
         }
-        if(buttonId == "btn3_clicked"){
+        else if(buttonId == "btn3_clicked"){
             console.log("clicked");
             fetch('/render-menu', {
                 method: 'POST',
