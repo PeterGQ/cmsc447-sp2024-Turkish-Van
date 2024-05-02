@@ -13,6 +13,9 @@ Game Modes and Features:
     In-game shop for items and abilities,
     Leaderboard to compete with other players,
     Save and load functionality
+Accessing the Game: 
+
+The game can be accessed by running login.py within the Sprint3/Game folder
 
 Code Structure:
 
