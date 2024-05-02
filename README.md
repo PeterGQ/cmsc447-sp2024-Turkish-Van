@@ -13,6 +13,17 @@ Game Modes and Features:
     In-game shop for items and abilities,
     Leaderboard to compete with other players,
     Save and load functionality
+Accessing the Game: 
+
+The game can be accessed by running login.py within the Sprint3/Game folder
+
+Minimum System Requirements:
+
+    Display: 16:9 aspect ratio monitor or wider, supporting at least 1280 x 720 resolution.
+    Operating System: Windows, macOS, Linux, or Chrome OS with the latest updates installed.
+    Web Browser: Latest versions of Google Chrome, Mozilla Firefox, Microsoft Edge, or Safari (for macOS users).
+    Internet Connection: A stable internet connection is required to access GitHub and play the game.
+    GitHub Account: Users need to have a GitHub account or be willing to create one.
 
 Code Structure:
 
