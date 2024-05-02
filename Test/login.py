@@ -490,7 +490,7 @@ def loadPlayer(user):
     
         for item in inventory:
             current_player_data['inventory'][item[1]] = item[2]
-        
+
         for move in moves:
             current_player_data['moves'].append(move[1])
     
