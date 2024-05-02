@@ -193,7 +193,7 @@ def leaderboard():
 
 def get_KDR(kills, deaths):
     if kills > 0 and deaths == 0:
-        return (100 * kills)
+        return (1.1 * kills)
     elif deaths == 0:
         return (0)
     else:

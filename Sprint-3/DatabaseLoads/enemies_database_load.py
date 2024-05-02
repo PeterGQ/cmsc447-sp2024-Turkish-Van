@@ -76,6 +76,7 @@ enemy_drop_list = [
     
     #Goblin Mage's item/move drops
     ("Goblin Mage", "Herbal Tonic", 1),
+    ("Goblin Mage", "Meditate", 1)
 ]
 
 cur.executemany("INSERT INTO enemy_drops VALUES (?, ?, ?)", enemy_drop_list)

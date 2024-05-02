@@ -682,7 +682,7 @@ function leave(winLossRun) {
   fetch('/returnToMap', requestData)
     .then(response => {
       if (response.ok) {
-        window.location.href = '/returnToMap'
+        window.location.href = '/start-map'
       }
       else {
         throw new Error('Error was not ok. Status: ' + response.status);

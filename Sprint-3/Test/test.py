@@ -17,7 +17,7 @@ def testEdgeCase1GetKDR():
     kills = 5
     deaths = 0
     kdr = get_KDR(kills, deaths)
-    if (kdr == (kills*100)):
+    if (kdr == (kills*1.1)):
         return True
     else:
         return False

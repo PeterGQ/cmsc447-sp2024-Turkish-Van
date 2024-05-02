@@ -36,8 +36,9 @@ item_list = [
     #Moves
     ("Sword Slash", "A simple but effective attack that deals moderate damage to a single enemy.", "BM", r"Icons\Sword Slash.png", 1, None, None, None, 0, 0, 0),
     ("Guard Stance", "A defensive stance that reduces incoming damage by 10 percent for 2 turns.", "BM", r"Icons\Guard Stance.png", 0, None, None, 2, 2, 2, 0),
-    ("Fireball", "A simple spell that launches a fireball that does moderate damage to an enemy.", "FM_WDO", r"Icons\Sword Slash.png", 1.4, None, None, None, 0, 0, 0),
     ("Restorative Strike", "A special attack that deals light damage to an enemy and restores 10 HP. 4 Turn Cooldown", "BM", r"Icons\Restorative Strike.png", 1, 10, None, None, 0, 4, 0),
+    ("Fireball", "A simple spell that launches a fireball that does moderate damage to an enemy.", "FM_WDO", r"Icons\Sword Slash.png", 1.4, None, None, None, 0, 0, 0),
+    ("Meditate", "A simple action that lets the user find inner calm, and restores 25 HP.", "FM_WDT", r"Icons\Restorative Strike.png", 0, 25, None, None, 0, 6, 0),
     ("Goblin Cleave", "A quick attack with moderate damage, similar to a standard goblin attack. It cannot be used for the next 3 turns", "FM_WDO", r"Icons\Goblin Cleave.png", 1.5, None, None, None, 0, 3, 0),
     ("Goblin Warcry", "A move inspired by the goblin warriors that increases both strength and defense by 15 percent for 2 turns.  It cannot be used for the next 4 turns.", "FM_WDT", r"Icons\Goblin Warcry.png", 0, None, 1.15, 1.15, 2, 4, 0),
     ("Goblin Spellshield", "A move inspired by wizard goblins that makes the player invincible for 2 turns. It cannot be used for the next 10 turns.", "FM_SH", r"Icons\Goblin Spellshield.png", 0, None, None, 100, 2, 10, 100),
