@@ -1,4 +1,5 @@
 import random
+import requests
 import sqlite3
 from sqlite3 import Error
 from flask import Flask, render_template, request, flash, redirect, url_for, session, json, jsonify
@@ -193,7 +194,7 @@ def leaderboard():
 
 def get_KDR(kills, deaths):
     if kills > 0 and deaths == 0:
-        return (100 * kills)
+        return (1.1 * kills)
     elif deaths == 0:
         return (0)
     else:
@@ -544,7 +545,42 @@ def getAllItems(itemData):
         itemsArray.append({'name': entry[0], 'description': entry[1], 'identifier': entry[2], 'icon': entry[3], 'atk': entry[4], 'hp_buff': entry[5],
                     'atk_buff': entry[6], 'def_buff': entry[7], 'duration': entry[8], 'cooldown': entry[9], 'price': entry[10]})
     return itemsArray
-    
+
+@app.route('/final-API', methods=['POST'])
+def apiCall():
+    conn_users = sqlite3.connect('user_info.db')
+    cursor_users = conn_users.cursor()
+
+    cursor_users.execute("SELECT username, player_kills, player_deaths FROM logins")
+    playerData = cursor_users.fetchall()
+    players = []
+    for player in playerData:
+        username, kills, deaths = player
+        kdr_display = f"{kills}-{deaths}"
+        players.append((username, kdr_display))
+
+    while len(players) < 5:
+        players.append(("N/A",'0'))
+
+    scores = {
+                "Group": "Turkish Van",
+                "Title": "Top 5 Scores",
+                players[0][0]: players[0][1],
+                players[1][0]: players[1][1],
+                players[2][0]: players[2][1],
+                players[3][0]: players[3][1],
+                players[4][0]: players[4][1],
+    }
+    data = {
+        "data":scores
+    }
+
+    sendScore = requests.post("https://eope3o6d7z7e2cc.m.pipedream.net",data)
+    if sendScore.status_code == 200:
+        print("success")
+    else:
+        print(sendScore)
+    return render_template("leaderboard.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -129,6 +129,19 @@
                 font-size: 40px;
                 font-weight: lighter;
             }
+            .send-scores button{
+                background-color:transparent;
+                margin-top: -140px;
+                text-align: left;
+                position: absolute;
+                margin-left: 0px;
+                text-decoration: none;
+                color: whitesmoke;
+                font-family: 'Ancient Modern Tales';
+                letter-spacing: 1.2px;
+                text-align: left;
+                font-size: 25px;
+            }
     </style>
     <body>
         <img id = "Game_Title" src = "/static/images/Logo.png">
@@ -159,5 +172,34 @@
                 Back to Main Menu
             </a>
         </div>
+        <div class="send-scores">
+            <button onclick="Send()" id="score">
+                Send Scores
+            </button>
+        </div>
+    <script>
+        const button = document.getElementById('score');
+        function Send(){
+    console.log("Proceeding with game reset."); // Log continuation after confirmation
+    fetch('/final-API', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: 'user123' }), // Replace with actual user ID
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log("Success");
+                button.innerHTML = 'Success!';
+            } else {
+                throw new Error('Network response was not ok. Status: ' + response.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+    </script>
     </body>
 </html>
